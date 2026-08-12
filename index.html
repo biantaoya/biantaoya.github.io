@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>符文大乱斗 · 英雄属性查询</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1280px;
+            width: 100%;
+        }
+
+        /* ===== 头部 ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-icon {
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.4rem;
+            letter-spacing: -0.02em;
+            color: #1a1a2e;
+            margin: 0;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+            padding-left: 0.8rem;
+            border-left: 3px solid #d4a853;
+            font-weight: 400;
+        }
+
+        .version-badge {
+            background: #e5e7eb;
+            border-radius: 40px;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            color: #4b5563;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        /* ===== 筛选栏 ===== */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+            background: #ffffff;
+            border-radius: 60px;
+            padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .filters:focus-within {
+            border-color: #d4a853;
+            box-shadow: 0 2px 12px rgba(212, 168, 83, 0.15);
+        }
+
+        .search-box {
+            flex: 2;
+            min-width: 180px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.6rem 2.4rem 0.6rem 0.8rem;
+            font-size: 0.95rem;
+            border: none;
+            background: transparent;
+            color: #1a1a2e;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-box input::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .search-box .clear-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            display: none;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .search-box .clear-btn.visible {
+            display: block;
+        }
+
+        .search-box .clear-btn:hover {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .type-filter {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            padding-right: 0.2rem;
+        }
+
+        .type-filter button {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            padding: 0.35rem 0.9rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .type-filter button:hover {
+            color: #1a1a2e;
+            background: #f3f4f6;
+        }
+
+        .type-filter button.active {
+            background: #d4a853;
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
+        }
+
+        /* ===== 统计 ===== */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .stats .count {
+            background: #ffffff;
+            padding: 0.25rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #e5e7eb;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1a1a2e;
+        }
+
+        .stats .match-info {
+            background: #f9fafb;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        /* ===== 网格 ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        /* ===== 卡片 ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.2rem 1.4rem 1.4rem;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.15s ease, border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4a853, transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            border-color: #d4a853;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card .hero-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card .hero-header img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            object-fit: cover;
+            background: #f9fafb;
+            flex-shrink: 0;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover .hero-header img {
+            border-color: #d4a853;
+        }
+
+        .card .hero-header .hero-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            flex: 1;
+            letter-spacing: -0.01em;
+            color: #1a1a2e;
+        }
+
+        .card .hero-header .type-badge {
+            font-size: 0.65rem;
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 0.15rem 0.7rem;
+            border-radius: 40px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        /* 各类型标签颜色 */
+        .card .hero-header .type-badge.type-战士 { background: #fef3c7; color: #92400e; }
+        .card .hero-header .type-badge.type-坦克 { background: #dbeafe; color: #1e40af; }
+        .card .hero-header .type-badge.type-法师 { background: #e0e7ff; color: #3730a3; }
+        .card .hero-header .type-badge.type-刺客 { background: #fce4ec; color: #9a1f3c; }
+        .card .hero-header .type-badge.type-射手 { background: #d1fae5; color: #065f46; }
+        .card .hero-header .type-badge.type-辅助 { background: #fce7f3; color: #9d174d; }
+
+        .card .attrs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        .card .attr-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.2rem;
+            font-size: 0.85rem;
+        }
+
+        .card .attr-item .label {
+            color: #6b7280;
+            font-weight: 400;
+            font-size: 0.8rem;
+        }
+
+        .card .attr-item .value {
+            font-weight: 600;
+            color: #1a1a2e;
+            background: #f9fafb;
+            padding: 0.05rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            border: 1px solid #e5e7eb;
+            min-width: 2.4rem;
+            text-align: center;
+        }
+
+        /* 伤害、治疗、护盾：大于1为正面(绿)，小于1为负面(红) */
+        .card .attr-item .value.positive {
+            color: #059669;
+            border-color: #a7f3d0;
+            background: #ecfdf5;
+        }
+        .card .attr-item .value.negative {
+            color: #dc2626;
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+        .card .attr-item .value.neutral {
+            color: #6b7280;
+            border-color: #e5e7eb;
+            background: #f9fafb;
+        }
+        .card .attr-item .value.empty {
+            color: #9ca3af;
+            border-color: #f3f4f6;
+            background: transparent;
+        }
+
+        /* 承伤单独反向：大于1为负面(红)，小于1为正面(绿) —— 与上述类名相同，但逻辑相反 */
+        /* 实际上我们将通过JS为承伤赋予相反的类名，所以无需额外样式 */
+
+        /* ===== 空状态 & 加载 ===== */
+        .no-result {
+            text-align: center;
+            padding: 4rem 0;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .no-result span {
+            display: block;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-tip {
+            text-align: center;
+            padding: 4rem 0;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .loading-tip .spinner {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #d4a853;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== 页脚 ===== */
+        .footer {
+            margin-top: 3.5rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1.8rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer a {
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.2s;
+            border-bottom: 1px dotted transparent;
+        }
+
+        .footer a:hover {
+            color: #d4a853;
+            border-bottom-color: #d4a853;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 768px) {
+            body { padding: 1.2rem 0.8rem; }
+            .filters {
+                border-radius: 30px;
+                padding: 0.4rem 0.4rem 0.4rem 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .search-box { min-width: 140px; }
+            .type-filter button { font-size: 0.75rem; padding: 0.25rem 0.6rem; }
+            .grid { grid-template-columns: 1fr; }
+            .card .hero-header img { width: 38px; height: 38px; }
+            .header-left h1 { font-size: 1.8rem; }
+            .logo-icon { font-size: 1.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            .filters { padding: 0.3rem 0.3rem 0.3rem 0.8rem; }
+            .search-box input { font-size: 0.85rem; padding: 0.4rem 1.8rem 0.4rem 0.4rem; }
+            .type-filter button { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+            .card { padding: 0.9rem 1rem; }
+            .stats { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部 -->
+    <div class="header">
+        <div class="header-left">
+            <span class="logo-icon">⚔️</span>
+            <h1>符文大乱斗</h1>
+            <span class="version-badge">v7.2b</span>
+        </div>
+        <div class="subtitle">英雄属性调整 · 实时查询</div>
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="filters">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索英雄…" autofocus>
+            <button class="clear-btn" id="clearBtn">✕</button>
+        </div>
+        <div class="type-filter" id="typeFilter">
+            <button class="active" data-type="all">全部</button>
+            <button data-type="战士">战士</button>
+            <button data-type="坦克">坦克</button>
+            <button data-type="法师">法师</button>
+            <button data-type="刺客">刺客</button>
+            <button data-type="射手">射手</button>
+            <button data-type="辅助">辅助</button>
+        </div>
+    </div>
+
+    <!-- 统计 -->
+    <div class="stats">
+        <span class="count" id="resultCount">加载中…</span>
+        <span class="match-info" id="matchInfo"></span>
+    </div>
+
+    <!-- 英雄网格 -->
+    <div id="heroGrid" class="grid"></div>
+    <div id="noResult" class="no-result" style="display:none;">
+        <span>🕵️</span> 没有找到匹配的英雄
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+        <span>数据基于 7.2b / 7.1d / 6.3d 版本</span>
+        <a href="#" onclick="resetAll();return false;">重置筛选</a>
+        <span>分类基于英雄联盟手游官网</span>
+    </div>
+</div>
+
+<script>
+    // ------------------------------------------------------------
+    // 基础数据（英雄属性调整表 + 官方类型分类）
+    // 分类依据：英雄联盟手游官网六大类型——战士、坦克、法师、刺客、射手、辅助
+    // 承伤颜色：>100% 红色（不利），<100% 绿色（有利）
+    // ------------------------------------------------------------
+    const HEROES_BASE = [
+        // ===== 战士 =====
+        { name: "艾瑞莉娅", damage: 1.15, taken: 0.85, heal: 1.2, shield: null, type: "战士" },
+        { name: "瑞雯", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "赵信", damage: 1.15, taken: 0.85, heal: 1.2, shield: null, type: "战士" },
+        { name: "嘉文四世", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "战士" },
+        { name: "瑟提", damage: 0.9, taken: 1, heal: null, shield: null, type: "战士" },
+        { name: "亚托克斯", damage: 1.05, taken: 0.75, heal: null, shield: null, type: "战士" },
+        { name: "卡蜜尔", damage: 1.2, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "德莱厄斯", damage: 1, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "菲奥娜", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "格温", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "战士" },
+        { name: "赫卡里姆", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "贾克斯", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "杰斯", damage: 1, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "李青", damage: 1.2, taken: 0.7, heal: null, shield: null, type: "战士" },
+        { name: "奥拉夫", damage: 1.1, taken: 0.85, heal: 1.2, shield: null, type: "战士" },
+        { name: "潘森", damage: 1, taken: 0.75, heal: null, shield: null, type: "战士" },
+        { name: "雷克顿", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "泰达米尔", damage: 1.2, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "沃里克", damage: 1.15, taken: 0.8, heal: 1.2, shield: null, type: "战士" },
+        { name: "亚索", damage: 1, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "永恩", damage: 1.05, taken: 0.75, heal: null, shield: null, type: "战士" },
+        { name: "佛耶戈", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "孙悟空", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "安蓓萨", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "战士" },
+        { name: "云阿娜", damage: 1, taken: 1, heal: null, shield: null, type: "战士" },
+        { name: "斯卡纳", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "战士" },
+        { name: "易", damage: 1.05, taken: 0.8, heal: null, shield: null, type: "战士" },
+        { name: "沃利贝尔", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "战士" },
+        { name: "波比", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "战士" },
+        { name: "泰隆", damage: 1.2, taken: 0.8, heal: null, shield: null, type: "战士" },
+        { name: "纳尔", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "战士" },
+        { name: "蔚", damage: 1.1, taken: 0.8, heal: null, shield: null, type: "战士" },
+        { name: "赛恩", damage: 1, taken: 1.05, heal: null, shield: null, type: "战士" },
+        { name: "盖伦", damage: 1, taken: 1, heal: null, shield: null, type: "战士" },
+        { name: "希瓦娜", damage: 1.1, taken: 0.95, heal: null, shield: null, type: "战士" },
+        { name: "慎", damage: 1, taken: 1, heal: null, shield: null, type: "战士" },
+        { name: "魔腾", damage: 1.15, taken: 0.75, heal: null, shield: null, type: "战士" },
+        { name: "凯隐", damage: 0.95, taken: 0.85, heal: null, shield: null, type: "战士" },
+
+        // ===== 坦克 =====
+        { name: "阿利斯塔", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "布隆", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "蕾欧娜", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "诺提勒斯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "墨菲特", damage: 1, taken: 0.95, heal: null, shield: null, type: "坦克" },
+        { name: "拉莫斯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "奥恩", damage: 1.05, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "科加斯", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "坦克" },
+        { name: "古拉加斯", damage: 1, taken: 0.95, heal: null, shield: null, type: "坦克" },
+        { name: "蒙多医生", damage: 1, taken: 1.1, heal: null, shield: null, type: "坦克" },
+        { name: "加里奥", damage: 1, taken: 0.9, heal: null, shield: null, type: "坦克" },
+        { name: "内瑟斯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "努努和威朗普", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "坦克" },
+        { name: "茂凯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "阿木木", damage: 1, taken: 0.9, heal: null, shield: null, type: "坦克" },
+        { name: "布里茨", damage: 1, taken: 0.95, heal: null, shield: null, type: "坦克" },
+        { name: "锤石", damage: 1, taken: 0.75, heal: null, shield: null, type: "坦克" },
+        { name: "芮尔", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "奎桑提", damage: 1.1, taken: 1, heal: null, shield: null, type: "坦克" },
+
+        // ===== 法师 =====
+        { name: "阿狸", damage: 1, taken: 0.9, heal: null, shield: null, type: "法师" },
+        { name: "安妮", damage: 1.2, taken: 0.9, heal: null, shield: null, type: "法师" },
+        { name: "布兰德", damage: 1, taken: 1.05, heal: null, shield: null, type: "法师" },
+        { name: "吉格斯", damage: 0.95, taken: 1.1, heal: null, shield: null, type: "法师" },
+        { name: "拉克丝", damage: 0.85, taken: 1.15, heal: null, shield: null, type: "法师" },
+        { name: "丽桑卓", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "法师" },
+        { name: "奥莉安娜", damage: 0.9, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "辛德拉", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "瑞兹", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "维克托", damage: 0.9, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "黑默丁格", damage: 0.9, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "兰博", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "法师" },
+        { name: "奈德丽", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "法师" },
+        { name: "阿萝拉", damage: 1, taken: 0.9, heal: null, shield: null, type: "法师" },
+        { name: "斯维因", damage: 1.1, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "维迦", damage: 1, taken: 1.1, heal: null, shield: null, type: "法师" },
+        { name: "崔斯特", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "法师" },
+        { name: "佐伊", damage: 1.2, taken: 0.95, heal: null, shield: null, type: "法师" },
+        { name: "维克兹", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "费德提克", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "法师" },
+        { name: "莫德凯撒", damage: 1, taken: 0.9, heal: null, shield: null, type: "法师" },
+        { name: "萨勒芬妮", damage: 0.8, taken: 1.2, heal: 0.8, shield: 0.8, type: "法师" },
+        { name: "黛安娜", damage: 1.15, taken: 1.15, heal: null, shield: null, type: "法师" },
+        { name: "奥瑞利安·索尔", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "基兰", damage: 1, taken: 0.85, heal: null, shield: null, type: "法师" },
+        { name: "卡尔玛", damage: 0.95, taken: 1.05, heal: null, shield: null, type: "法师" },
+        { name: "莫甘娜", damage: 0.8, taken: 1.05, heal: null, shield: null, type: "法师" },
+        { name: "塔莉垭", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "辛吉德", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
+        { name: "凯尔", damage: 0.9, taken: 1.1, heal: null, shield: null, type: "法师" },
+
+        // ===== 刺客 =====
+        { name: "阿卡丽", damage: 1.1, taken: 0.7, heal: null, shield: null, type: "刺客" },
+        { name: "艾克", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "刺客" },
+        { name: "伊芙琳", damage: 1.05, taken: 0.7, heal: null, shield: null, type: "刺客" },
+        { name: "菲兹", damage: 1.05, taken: 0.8, heal: null, shield: null, type: "刺客" },
+        { name: "卡特琳娜", damage: 1.05, taken: 0.75, heal: null, shield: null, type: "刺客" },
+        { name: "卡兹克", damage: 1.2, taken: 0.7, heal: null, shield: null, type: "刺客" },
+        { name: "雷恩加尔", damage: 1.1, taken: 0.8, heal: null, shield: null, type: "刺客" },
+        { name: "劫", damage: 1.1, taken: 0.8, heal: null, shield: null, type: "刺客" },
+        { name: "派克", damage: 1.2, taken: 1, heal: null, shield: null, type: "刺客" },
+        { name: "卡萨丁", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "刺客" },
+        { name: "凯南", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "刺客" },
+        { name: "薇古丝", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "刺客" },
+
+        // ===== 射手 =====
+        { name: "艾希", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
+        { name: "凯特琳", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
+        { name: "德莱文", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "射手" },
+        { name: "伊泽瑞尔", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "格雷福斯", damage: 1.15, taken: 0.8, heal: null, shield: null, type: "射手" },
+        { name: "金克丝", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
+        { name: "烬", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
+        { name: "卢锡安", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "射手" },
+        { name: "莎弥拉", damage: 1, taken: 0.9, heal: null, shield: null, type: "射手" },
+        { name: "希维尔", damage: 0.95, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "崔丝塔娜", damage: 0.95, taken: 1.05, heal: null, shield: null, type: "射手" },
+        { name: "尼菈", damage: 1, taken: 0.9, heal: null, shield: null, type: "射手" },
+        { name: "泽丽", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "射手" },
+        { name: "薇恩", damage: 1, taken: 1.1, heal: null, shield: null, type: "射手" },
+        { name: "韦鲁斯", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "厄运小姐", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "霞", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "图奇", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "库奇", damage: 1.1, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "斯莫德", damage: 0.95, taken: 1.05, heal: null, shield: null, type: "射手" },
+        { name: "卡莎", damage: 1, taken: 0.95, heal: null, shield: null, type: "射手" },
+        { name: "赛娜", damage: 1, taken: 1, heal: 0.9, shield: null, type: "射手" },
+        { name: "克格莫", damage: 0.9, taken: 1.1, heal: null, shield: null, type: "射手" },
+        { name: "卡莉丝塔", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
+        { name: "阿克尚", damage: 1.1, taken: 0.95, heal: null, shield: null, type: "射手" },
+        { name: "千珏", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "射手" },
+
+        // ===== 辅助 =====
+        { name: "迦娜", damage: 1, taken: 1.15, heal: 0.85, shield: 0.85, type: "辅助" },
+        { name: "璐璐", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
+        { name: "索拉卡", damage: 1, taken: 1.05, heal: 0.75, shield: 0.75, type: "辅助" },
+        { name: "娜美", damage: 1, taken: 1.1, heal: 0.9, shield: null, type: "辅助" },
+        { name: "娑娜", damage: 0.8, taken: 1.2, heal: 0.75, shield: 0.75, type: "辅助" },
+        { name: "悠米", damage: 1, taken: 0.95, heal: 0.8, shield: 0.8, type: "辅助" },
+        { name: "巴德", damage: 1, taken: 1, heal: 1.2, shield: null, type: "辅助" },
+        { name: "洛", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "辅助" },
+        { name: "米利欧", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
+        { name: "诺拉", damage: 0.9, taken: 1, heal: null, shield: null, type: "辅助" },
+        { name: "提莫", damage: 0.85, taken: 1, heal: null, shield: null, type: "辅助" },
+        { name: "厄加特", damage: 1, taken: 0.9, heal: null, shield: null, type: "辅助" },
+        { name: "婕拉", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "辅助" },
+        { name: "莉莉娅", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
+        { name: "梅尔", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
+        { name: "弗拉基米尔", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
+    ];
+
+    // ----- 全局状态 -----
+    let heroes = [];
+    let currentType = 'all';
+    let searchText = '';
+
+    // ----- DOM 引用 -----
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    const resultCount = document.getElementById('resultCount');
+    const matchInfo = document.getElementById('matchInfo');
+    const grid = document.getElementById('heroGrid');
+    const noResult = document.getElementById('noResult');
+    const typeButtons = document.querySelectorAll('#typeFilter button');
+
+    // ----- 辅助函数 -----
+    function fmt(value) {
+        if (value === null || value === undefined) return null;
+        const num = parseFloat(value);
+        if (isNaN(num)) return null;
+        return Math.round(num * 100) + '%';
+    }
+
+    // 伤害、治疗、护盾：大于1为正面(绿)，小于1为负面(红)
+    function getCssClass(value) {
+        if (value === null || value === undefined) return 'empty';
+        const num = parseFloat(value);
+        if (isNaN(num)) return 'empty';
+        if (num > 1) return 'positive';
+        if (num < 1) return 'negative';
+        return 'neutral';
+    }
+
+    // 承伤单独反向：大于1为负面(红)，小于1为正面(绿)
+    function getTakenCssClass(value) {
+        if (value === null || value === undefined) return 'empty';
+        const num = parseFloat(value);
+        if (isNaN(num)) return 'empty';
+        if (num > 1) return 'negative';   // 承伤增加，不利 -> 红色
+        if (num < 1) return 'positive';   // 承伤减少，有利 -> 绿色
+        return 'neutral';
+    }
+
+    // 渲染
+    function render(heroList) {
+        if (heroList.length === 0) {
+            grid.innerHTML = '';
+            noResult.style.display = 'block';
+            resultCount.textContent = '共 0 位英雄';
+            matchInfo.textContent = '';
+            return;
+        }
+        noResult.style.display = 'none';
+        resultCount.textContent = `共 ${heroList.length} 位英雄`;
+
+        let html = '';
+        heroList.forEach(h => {
+            const dmg = fmt(h.damage);
+            const tkn = fmt(h.taken);
+            const heal = fmt(h.heal);
+            const shield = fmt(h.shield);
+            const dmgCls = getCssClass(h.damage);
+            const tknCls = getTakenCssClass(h.taken);   // 承伤特殊处理
+            const healCls = getCssClass(h.heal);
+            const shieldCls = getCssClass(h.shield);
+            const iconPath = `./英雄联盟英雄头像_真名命名_173个/${h.name}.png`;
+            const fallbackIcon = 'https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/default.png';
+            const typeClass = 'type-' + h.type;
+
+            html += `
+                <div class="card">
+                    <div class="hero-header">
+                        <img src="${iconPath}" alt="${h.name}" loading="lazy" onerror="this.src='${fallbackIcon}'">
+                        <span class="hero-name">${h.name}</span>
+                        <span class="type-badge ${typeClass}">${h.type}</span>
+                    </div>
+                    <div class="attrs">
+                        <span class="attr-item">
+                            <span class="label">伤害</span>
+                            <span class="value ${dmgCls}">${dmg || '—'}</span>
+                        </span>
+                        <span class="attr-item">
+                            <span class="label">承伤</span>
+                            <span class="value ${tknCls}">${tkn || '—'}</span>
+                        </span>
+                        ${heal !== null ? `<span class="attr-item"><span class="label">治疗</span><span class="value ${healCls}">${heal}</span></span>` : ''}
+                        ${shield !== null ? `<span class="attr-item"><span class="label">护盾</span><span class="value ${shieldCls}">${shield}</span></span>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        grid.innerHTML = html;
+        matchInfo.textContent = `匹配 ${heroList.length} 个结果`;
+    }
+
+    function filterAndRender() {
+        const filtered = heroes.filter(h => {
+            const nameMatch = h.name.includes(searchText);
+            const typeMatch = currentType === 'all' || h.type === currentType;
+            return nameMatch && typeMatch;
+        });
+        render(filtered);
+    }
+
+    // ----- 初始化 -----
+    function initHeroes() {
+        grid.innerHTML = `
+            <div class="loading-tip">
+                <div class="spinner"></div>
+                <div>正在加载英雄数据…</div>
+            </div>
+        `;
+        resultCount.textContent = '加载中…';
+
+        // 直接使用内嵌数据
+        heroes = HEROES_BASE.map(h => ({ ...h }));
+        filterAndRender();
+    }
+
+    // ----- 事件绑定 -----
+    searchInput.addEventListener('input', function() {
+        const val = this.value;
+        searchText = val;
+        if (val.length > 0) {
+            clearBtn.classList.add('visible');
+        } else {
+            clearBtn.classList.remove('visible');
+        }
+        filterAndRender();
+    });
+
+    clearBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        searchText = '';
+        clearBtn.classList.remove('visible');
+        filterAndRender();
+        searchInput.focus();
+    });
+
+    typeButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            typeButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentType = this.dataset.type;
+            filterAndRender();
+        });
+    });
+
+    function resetAll() {
+        searchInput.value = '';
+        searchText = '';
+        clearBtn.classList.remove('visible');
+        typeButtons.forEach(b => b.classList.remove('active'));
+        document.querySelector('#typeFilter button[data-type="all"]').classList.add('active');
+        currentType = 'all';
+        filterAndRender();
+        searchInput.focus();
+    }
+
+    document.querySelector('.footer a')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        resetAll();
+    });
+
+    // 启动
+    initHeroes();
+</script>
+</body>
+</html>
