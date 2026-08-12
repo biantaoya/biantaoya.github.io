@@ -291,7 +291,6 @@
             text-transform: uppercase;
         }
 
-        /* 各类型标签颜色 */
         .card .hero-header .type-badge.type-战士 { background: #fef3c7; color: #92400e; }
         .card .hero-header .type-badge.type-坦克 { background: #dbeafe; color: #1e40af; }
         .card .hero-header .type-badge.type-法师 { background: #e0e7ff; color: #3730a3; }
@@ -331,7 +330,6 @@
             text-align: center;
         }
 
-        /* 伤害、治疗、护盾：大于1为正面(绿)，小于1为负面(红) */
         .card .attr-item .value.positive {
             color: #059669;
             border-color: #a7f3d0;
@@ -353,8 +351,26 @@
             background: transparent;
         }
 
-        /* 承伤单独反向：大于1为负面(红)，小于1为正面(绿) —— 与上述类名相同，但逻辑相反 */
-        /* 实际上我们将通过JS为承伤赋予相反的类名，所以无需额外样式 */
+        /* 其他增益样式 */
+        .card .other-buff {
+            margin-top: 0.7rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed #e5e7eb;
+            font-size: 0.75rem;
+            color: #4b5563;
+            line-height: 1.5;
+            display: flex;
+            gap: 0.3rem;
+        }
+        .card .other-buff .buff-label {
+            font-weight: 500;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+        .card .other-buff .buff-desc {
+            color: #1a1a2e;
+            word-break: break-word;
+        }
 
         /* ===== 空状态 & 加载 ===== */
         .no-result {
@@ -442,6 +458,7 @@
             .type-filter button { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
             .card { padding: 0.9rem 1rem; }
             .stats { font-size: 0.8rem; }
+            .card .other-buff { font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -452,7 +469,7 @@
         <div class="header-left">
             <span class="logo-icon">⚔️</span>
             <h1>符文大乱斗</h1>
-            <span class="version-badge">v7.2b</span>
+            <span class="version-badge">v7.2c</span>
         </div>
         <div class="subtitle">英雄属性调整 · 实时查询</div>
     </div>
@@ -488,7 +505,7 @@
 
     <!-- 页脚 -->
     <div class="footer">
-        <span>数据基于 7.2b / 7.1d / 6.3d 版本</span>
+        <span>数据基于 7.2c / 7.2b / 7.1d / 6.3d 版本</span>
         <a href="#" onclick="resetAll();return false;">重置筛选</a>
         <span>分类基于英雄联盟手游官网</span>
     </div>
@@ -496,163 +513,163 @@
 
 <script>
     // ------------------------------------------------------------
-    // 基础数据（英雄属性调整表 + 官方类型分类）
+    // 英雄数据（完整更新，包含其他增益）
     // 分类依据：英雄联盟手游官网六大类型——战士、坦克、法师、刺客、射手、辅助
     // 承伤颜色：>100% 红色（不利），<100% 绿色（有利）
     // ------------------------------------------------------------
     const HEROES_BASE = [
         // ===== 战士 =====
-        { name: "艾瑞莉娅", damage: 1.15, taken: 0.85, heal: 1.2, shield: null, type: "战士" },
-        { name: "瑞雯", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "赵信", damage: 1.15, taken: 0.85, heal: 1.2, shield: null, type: "战士" },
-        { name: "嘉文四世", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "战士" },
-        { name: "瑟提", damage: 0.9, taken: 1, heal: null, shield: null, type: "战士" },
-        { name: "亚托克斯", damage: 1.05, taken: 0.75, heal: null, shield: null, type: "战士" },
-        { name: "卡蜜尔", damage: 1.2, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "德莱厄斯", damage: 1, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "菲奥娜", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "格温", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "战士" },
-        { name: "赫卡里姆", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "贾克斯", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "杰斯", damage: 1, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "李青", damage: 1.2, taken: 0.7, heal: null, shield: null, type: "战士" },
-        { name: "奥拉夫", damage: 1.1, taken: 0.85, heal: 1.2, shield: null, type: "战士" },
-        { name: "潘森", damage: 1, taken: 0.75, heal: null, shield: null, type: "战士" },
-        { name: "雷克顿", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "泰达米尔", damage: 1.2, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "沃里克", damage: 1.15, taken: 0.8, heal: 1.2, shield: null, type: "战士" },
-        { name: "亚索", damage: 1, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "永恩", damage: 1.05, taken: 0.75, heal: null, shield: null, type: "战士" },
-        { name: "佛耶戈", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "孙悟空", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "战士" },
-        { name: "安蓓萨", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "战士" },
-        { name: "云阿娜", damage: 1, taken: 1, heal: null, shield: null, type: "战士" },
-        { name: "斯卡纳", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "战士" },
-        { name: "易", damage: 1.05, taken: 0.8, heal: null, shield: null, type: "战士" },
-        { name: "沃利贝尔", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "战士" },
-        { name: "波比", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "战士" },
-        { name: "泰隆", damage: 1.2, taken: 0.8, heal: null, shield: null, type: "战士" },
-        { name: "纳尔", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "战士" },
-        { name: "蔚", damage: 1.1, taken: 0.8, heal: null, shield: null, type: "战士" },
-        { name: "赛恩", damage: 1, taken: 1.05, heal: null, shield: null, type: "战士" },
-        { name: "盖伦", damage: 1, taken: 1, heal: null, shield: null, type: "战士" },
-        { name: "希瓦娜", damage: 1.1, taken: 0.95, heal: null, shield: null, type: "战士" },
-        { name: "慎", damage: 1, taken: 1, heal: null, shield: null, type: "战士" },
-        { name: "魔腾", damage: 1.15, taken: 0.75, heal: null, shield: null, type: "战士" },
-        { name: "凯隐", damage: 0.95, taken: 0.85, heal: null, shield: null, type: "战士" },
+        { name: "艾瑞莉娅", damage: 1.15, taken: 0.85, heal: 1.2, shield: null, other: null, type: "战士" },
+        { name: "瑞雯", damage: 1.15, taken: 0.8, heal: null, shield: null, other: null, type: "战士" },
+        { name: "赵信", damage: 1.15, taken: 0.8, heal: 1.2, shield: null, other: null, type: "战士" },
+        { name: "嘉文四世", damage: 1.05, taken: 0.95, heal: null, shield: null, other: "W技能冷却减半(10→5秒)，法力消耗减半(30→15)", type: "战士" },
+        { name: "瑟提", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "战士" },
+        { name: "亚托克斯", damage: 1.05, taken: 0.75, heal: null, shield: null, other: null, type: "战士" },
+        { name: "卡蜜尔", damage: 1.2, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "德莱厄斯", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "菲奥娜", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "格温", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "战士" },
+        { name: "赫卡里姆", damage: 1.15, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "贾克斯", damage: 1.15, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "杰斯", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "李青", damage: 1.2, taken: 0.7, heal: null, shield: null, other: null, type: "战士" },
+        { name: "奥拉夫", damage: 1.1, taken: 0.8, heal: 1.2, shield: null, other: null, type: "战士" },
+        { name: "潘森", damage: 1, taken: 0.75, heal: null, shield: null, other: null, type: "战士" },
+        { name: "雷克顿", damage: 1.1, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "泰达米尔", damage: 1.2, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "沃里克", damage: 1.15, taken: 0.8, heal: 1.2, shield: null, other: null, type: "战士" },
+        { name: "亚索", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "永恩", damage: 1.05, taken: 0.75, heal: null, shield: null, other: null, type: "战士" },
+        { name: "佛耶戈", damage: 1.1, taken: 0.8, heal: null, shield: null, other: null, type: "战士" },
+        { name: "孙悟空", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
+        { name: "安蓓萨", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "战士" },
+        { name: "云阿娜", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "战士" },
+        { name: "斯卡纳", damage: 1.1, taken: 0.9, heal: null, shield: null, other: "E技能冷却减半(18/16/14/12→9/8/7/6秒)，法力消耗大幅降低(50/55/60/65→20/25/30/35)", type: "战士" },
+        { name: "易", damage: 1.05, taken: 0.8, heal: null, shield: null, other: "Q技能新增120%AP加成；W技能AP加成80%→400%", type: "战士" },
+        { name: "沃利贝尔", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "战士" },
+        { name: "波比", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "战士" },
+        { name: "泰隆", damage: 1.2, taken: 0.8, heal: null, shield: null, other: null, type: "战士" },
+        { name: "纳尔", damage: 1.1, taken: 0.9, heal: null, shield: null, other: "E技能冷却减半(21/18/15/12→10.5/9/7.5/6秒)", type: "战士" },
+        { name: "蔚", damage: 1.1, taken: 0.8, heal: null, shield: null, other: null, type: "战士" },
+        { name: "赛恩", damage: 1, taken: 1.05, heal: null, shield: null, other: null, type: "战士" },
+        { name: "盖伦", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "战士" },
+        { name: "希瓦娜", damage: 1.1, taken: 0.95, heal: null, shield: null, other: null, type: "战士" },
+        { name: "慎", damage: 1, taken: 1, heal: null, shield: null, other: "能量消耗减少33%", type: "战士" },
+        { name: "魔腾", damage: 1.15, taken: 0.75, heal: null, shield: null, other: "W技能冷却减半(18/16/14/12→9/8/7/6秒)，法力消耗减半(50→25)", type: "战士" },
+        { name: "凯隐", damage: 0.95, taken: 0.85, heal: null, shield: null, other: null, type: "战士" },
 
         // ===== 坦克 =====
-        { name: "阿利斯塔", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "布隆", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "蕾欧娜", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "诺提勒斯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "墨菲特", damage: 1, taken: 0.95, heal: null, shield: null, type: "坦克" },
-        { name: "拉莫斯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "奥恩", damage: 1.05, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "科加斯", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "坦克" },
-        { name: "古拉加斯", damage: 1, taken: 0.95, heal: null, shield: null, type: "坦克" },
-        { name: "蒙多医生", damage: 1, taken: 1.1, heal: null, shield: null, type: "坦克" },
-        { name: "加里奥", damage: 1, taken: 0.9, heal: null, shield: null, type: "坦克" },
-        { name: "内瑟斯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "努努和威朗普", damage: 1.15, taken: 0.85, heal: null, shield: null, type: "坦克" },
-        { name: "茂凯", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "阿木木", damage: 1, taken: 0.9, heal: null, shield: null, type: "坦克" },
-        { name: "布里茨", damage: 1, taken: 0.95, heal: null, shield: null, type: "坦克" },
-        { name: "锤石", damage: 1, taken: 0.75, heal: null, shield: null, type: "坦克" },
-        { name: "芮尔", damage: 1, taken: 1, heal: null, shield: null, type: "坦克" },
-        { name: "奎桑提", damage: 1.1, taken: 1, heal: null, shield: null, type: "坦克" },
+        { name: "阿利斯塔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "布隆", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "蕾欧娜", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "诺提勒斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "墨菲特", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "拉莫斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "奥恩", damage: 1.05, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "科加斯", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "古拉加斯", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "蒙多医生", damage: 1, taken: 1.1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "加里奥", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "内瑟斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "努努和威朗普", damage: 1.15, taken: 0.85, heal: null, shield: null, other: "E技能冷却减半(12→6秒)，法力消耗大幅降低(55/60/65/70→25/30/35/40)", type: "坦克" },
+        { name: "茂凯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "阿木木", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "布里茨", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "锤石", damage: 1, taken: 0.75, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "芮尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
+        { name: "奎桑提", damage: 1.1, taken: 1, heal: null, shield: null, other: null, type: "坦克" },
 
         // ===== 法师 =====
-        { name: "阿狸", damage: 1, taken: 0.9, heal: null, shield: null, type: "法师" },
-        { name: "安妮", damage: 1.2, taken: 0.9, heal: null, shield: null, type: "法师" },
-        { name: "布兰德", damage: 1, taken: 1.05, heal: null, shield: null, type: "法师" },
-        { name: "吉格斯", damage: 0.95, taken: 1.1, heal: null, shield: null, type: "法师" },
-        { name: "拉克丝", damage: 0.85, taken: 1.15, heal: null, shield: null, type: "法师" },
-        { name: "丽桑卓", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "法师" },
-        { name: "奥莉安娜", damage: 0.9, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "辛德拉", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "瑞兹", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "维克托", damage: 0.9, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "黑默丁格", damage: 0.9, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "兰博", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "法师" },
-        { name: "奈德丽", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "法师" },
-        { name: "阿萝拉", damage: 1, taken: 0.9, heal: null, shield: null, type: "法师" },
-        { name: "斯维因", damage: 1.1, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "维迦", damage: 1, taken: 1.1, heal: null, shield: null, type: "法师" },
-        { name: "崔斯特", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "法师" },
-        { name: "佐伊", damage: 1.2, taken: 0.95, heal: null, shield: null, type: "法师" },
-        { name: "维克兹", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "费德提克", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "法师" },
-        { name: "莫德凯撒", damage: 1, taken: 0.9, heal: null, shield: null, type: "法师" },
-        { name: "萨勒芬妮", damage: 0.8, taken: 1.2, heal: 0.8, shield: 0.8, type: "法师" },
-        { name: "黛安娜", damage: 1.15, taken: 1.15, heal: null, shield: null, type: "法师" },
-        { name: "奥瑞利安·索尔", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "基兰", damage: 1, taken: 0.85, heal: null, shield: null, type: "法师" },
-        { name: "卡尔玛", damage: 0.95, taken: 1.05, heal: null, shield: null, type: "法师" },
-        { name: "莫甘娜", damage: 0.8, taken: 1.05, heal: null, shield: null, type: "法师" },
-        { name: "塔莉垭", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "辛吉德", damage: 1, taken: 1, heal: null, shield: null, type: "法师" },
-        { name: "凯尔", damage: 0.9, taken: 1.1, heal: null, shield: null, type: "法师" },
+        { name: "阿狸", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "法师" },
+        { name: "安妮", damage: 1.2, taken: 0.9, heal: null, shield: null, other: "E技能冷却减半(14→7秒)，法力消耗减半(60→30)", type: "法师" },
+        { name: "布兰德", damage: 1, taken: 1.05, heal: null, shield: null, other: null, type: "法师" },
+        { name: "吉格斯", damage: 0.95, taken: 1.1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "拉克丝", damage: 0.85, taken: 1.15, heal: null, shield: null, other: null, type: "法师" },
+        { name: "丽桑卓", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "法师" },
+        { name: "奥莉安娜", damage: 0.9, taken: 1, heal: null, shield: null, other: "E技能冷却减半(9→4.5秒)，法力消耗减半(60→30)", type: "法师" },
+        { name: "辛德拉", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "瑞兹", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "维克托", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "黑默丁格", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "兰博", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "法师" },
+        { name: "奈德丽", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "法师" },
+        { name: "阿萝拉", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "法师" },
+        { name: "斯维因", damage: 1.1, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "维迦", damage: 1, taken: 1.1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "崔斯特", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "法师" },
+        { name: "佐伊", damage: 1.25, taken: 0.95, heal: null, shield: null, other: null, type: "法师" },
+        { name: "维克兹", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "费德提克", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "法师" },
+        { name: "莫德凯撒", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "法师" },
+        { name: "萨勒芬妮", damage: 0.8, taken: 1.2, heal: 0.8, shield: 0.8, other: null, type: "法师" },
+        { name: "黛安娜", damage: 1.15, taken: 1.15, heal: null, shield: null, other: null, type: "法师" },
+        { name: "奥瑞利安·索尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "基兰", damage: 1, taken: 0.85, heal: null, shield: null, other: "W技能冷却大幅降低(14.5/13.5/12.5/11.5→9.5/8.5/7.5/6.5秒)，法力消耗减半(35→15)", type: "法师" },
+        { name: "卡尔玛", damage: 0.95, taken: 1.05, heal: null, shield: null, other: "W技能冷却减半(15→7.5秒)，法力消耗大幅降低(55/60/65/70→25/30/35/40)", type: "法师" },
+        { name: "莫甘娜", damage: 0.8, taken: 1.05, heal: null, shield: null, other: null, type: "法师" },
+        { name: "塔莉垭", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "辛吉德", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师" },
+        { name: "凯尔", damage: 0.9, taken: 1.1, heal: null, shield: null, other: null, type: "法师" },
 
         // ===== 刺客 =====
-        { name: "阿卡丽", damage: 1.1, taken: 0.7, heal: null, shield: null, type: "刺客" },
-        { name: "艾克", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "刺客" },
-        { name: "伊芙琳", damage: 1.05, taken: 0.7, heal: null, shield: null, type: "刺客" },
-        { name: "菲兹", damage: 1.05, taken: 0.8, heal: null, shield: null, type: "刺客" },
-        { name: "卡特琳娜", damage: 1.05, taken: 0.75, heal: null, shield: null, type: "刺客" },
-        { name: "卡兹克", damage: 1.2, taken: 0.7, heal: null, shield: null, type: "刺客" },
-        { name: "雷恩加尔", damage: 1.1, taken: 0.8, heal: null, shield: null, type: "刺客" },
-        { name: "劫", damage: 1.1, taken: 0.8, heal: null, shield: null, type: "刺客" },
-        { name: "派克", damage: 1.2, taken: 1, heal: null, shield: null, type: "刺客" },
-        { name: "卡萨丁", damage: 1.05, taken: 0.85, heal: null, shield: null, type: "刺客" },
-        { name: "凯南", damage: 1.1, taken: 0.85, heal: null, shield: null, type: "刺客" },
-        { name: "薇古丝", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "刺客" },
+        { name: "阿卡丽", damage: 1.1, taken: 0.7, heal: null, shield: null, other: "能量消耗减少33%", type: "刺客" },
+        { name: "艾克", damage: 1.1, taken: 0.85, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "伊芙琳", damage: 1.05, taken: 0.7, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "菲兹", damage: 1.05, taken: 0.8, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "卡特琳娜", damage: 1.05, taken: 0.75, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "卡兹克", damage: 1.2, taken: 0.7, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "雷恩加尔", damage: 1.1, taken: 0.8, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "劫", damage: 1.1, taken: 0.8, heal: null, shield: null, other: "能量消耗减少33%", type: "刺客" },
+        { name: "派克", damage: 1.2, taken: 1, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "卡萨丁", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "刺客" },
+        { name: "凯南", damage: 1.1, taken: 0.85, heal: null, shield: null, other: "能量消耗减少33%", type: "刺客" },
+        { name: "薇古丝", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "刺客" },
 
         // ===== 射手 =====
-        { name: "艾希", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
-        { name: "凯特琳", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
-        { name: "德莱文", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "射手" },
-        { name: "伊泽瑞尔", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "格雷福斯", damage: 1.15, taken: 0.8, heal: null, shield: null, type: "射手" },
-        { name: "金克丝", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
-        { name: "烬", damage: 0.9, taken: 1.05, heal: null, shield: null, type: "射手" },
-        { name: "卢锡安", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "射手" },
-        { name: "莎弥拉", damage: 1, taken: 0.9, heal: null, shield: null, type: "射手" },
-        { name: "希维尔", damage: 0.95, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "崔丝塔娜", damage: 0.95, taken: 1.05, heal: null, shield: null, type: "射手" },
-        { name: "尼菈", damage: 1, taken: 0.9, heal: null, shield: null, type: "射手" },
-        { name: "泽丽", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "射手" },
-        { name: "薇恩", damage: 1, taken: 1.1, heal: null, shield: null, type: "射手" },
-        { name: "韦鲁斯", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "厄运小姐", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "霞", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "图奇", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "库奇", damage: 1.1, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "斯莫德", damage: 0.95, taken: 1.05, heal: null, shield: null, type: "射手" },
-        { name: "卡莎", damage: 1, taken: 0.95, heal: null, shield: null, type: "射手" },
-        { name: "赛娜", damage: 1, taken: 1, heal: 0.9, shield: null, type: "射手" },
-        { name: "克格莫", damage: 0.9, taken: 1.1, heal: null, shield: null, type: "射手" },
-        { name: "卡莉丝塔", damage: 1, taken: 1, heal: null, shield: null, type: "射手" },
-        { name: "阿克尚", damage: 1.1, taken: 0.95, heal: null, shield: null, type: "射手" },
-        { name: "千珏", damage: 1.1, taken: 0.9, heal: null, shield: null, type: "射手" },
+        { name: "艾希", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手" },
+        { name: "凯特琳", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手" },
+        { name: "德莱文", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "射手" },
+        { name: "伊泽瑞尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "格雷福斯", damage: 1.15, taken: 0.8, heal: null, shield: null, other: null, type: "射手" },
+        { name: "金克丝", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手" },
+        { name: "烬", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手" },
+        { name: "卢锡安", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "射手" },
+        { name: "莎弥拉", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "射手" },
+        { name: "希维尔", damage: 0.95, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "崔丝塔娜", damage: 0.95, taken: 1.05, heal: null, shield: null, other: null, type: "射手" },
+        { name: "尼菈", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "射手" },
+        { name: "泽丽", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "射手" },
+        { name: "薇恩", damage: 1, taken: 1.1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "韦鲁斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "厄运小姐", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "霞", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "图奇", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "库奇", damage: 1.1, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "斯莫德", damage: 0.95, taken: 1.05, heal: null, shield: null, other: null, type: "射手" },
+        { name: "卡莎", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "射手" },
+        { name: "赛娜", damage: 1, taken: 1, heal: 0.9, shield: null, other: null, type: "射手" },
+        { name: "克格莫", damage: 0.9, taken: 1.1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "卡莉丝塔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手" },
+        { name: "阿克尚", damage: 1.1, taken: 0.95, heal: null, shield: null, other: null, type: "射手" },
+        { name: "千珏", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "射手" },
 
         // ===== 辅助 =====
-        { name: "迦娜", damage: 1, taken: 1.15, heal: 0.85, shield: 0.85, type: "辅助" },
-        { name: "璐璐", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
-        { name: "索拉卡", damage: 1, taken: 1.05, heal: 0.75, shield: 0.75, type: "辅助" },
-        { name: "娜美", damage: 1, taken: 1.1, heal: 0.9, shield: null, type: "辅助" },
-        { name: "娑娜", damage: 0.8, taken: 1.2, heal: 0.75, shield: 0.75, type: "辅助" },
-        { name: "悠米", damage: 1, taken: 0.95, heal: 0.8, shield: 0.8, type: "辅助" },
-        { name: "巴德", damage: 1, taken: 1, heal: 1.2, shield: null, type: "辅助" },
-        { name: "洛", damage: 1.05, taken: 0.9, heal: null, shield: null, type: "辅助" },
-        { name: "米利欧", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
-        { name: "诺拉", damage: 0.9, taken: 1, heal: null, shield: null, type: "辅助" },
-        { name: "提莫", damage: 0.85, taken: 1, heal: null, shield: null, type: "辅助" },
-        { name: "厄加特", damage: 1, taken: 0.9, heal: null, shield: null, type: "辅助" },
-        { name: "婕拉", damage: 1.05, taken: 0.95, heal: null, shield: null, type: "辅助" },
-        { name: "莉莉娅", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
-        { name: "梅尔", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
-        { name: "弗拉基米尔", damage: 1, taken: 1, heal: null, shield: null, type: "辅助" },
+        { name: "迦娜", damage: 1, taken: 1.15, heal: 0.85, shield: 0.85, other: null, type: "辅助" },
+        { name: "璐璐", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "索拉卡", damage: 1, taken: 1.05, heal: 0.75, shield: 0.75, other: null, type: "辅助" },
+        { name: "娜美", damage: 1, taken: 1.1, heal: 0.9, shield: null, other: null, type: "辅助" },
+        { name: "娑娜", damage: 0.8, taken: 1.2, heal: 0.75, shield: 0.75, other: null, type: "辅助" },
+        { name: "悠米", damage: 1, taken: 0.95, heal: 0.8, shield: 0.8, other: null, type: "辅助" },
+        { name: "巴德", damage: 1, taken: 1, heal: 1.2, shield: null, other: "W技能冷却减半(15/14.5/14/13.5→8/7/6/5秒)，法力消耗减半(70→35)", type: "辅助" },
+        { name: "洛", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "米利欧", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "诺拉", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "提莫", damage: 0.85, taken: 1, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "厄加特", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "婕拉", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "莉莉娅", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "梅尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助" },
+        { name: "弗拉基米尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助" },
     ];
 
     // ----- 全局状态 -----
@@ -692,8 +709,8 @@
         if (value === null || value === undefined) return 'empty';
         const num = parseFloat(value);
         if (isNaN(num)) return 'empty';
-        if (num > 1) return 'negative';   // 承伤增加，不利 -> 红色
-        if (num < 1) return 'positive';   // 承伤减少，有利 -> 绿色
+        if (num > 1) return 'negative';
+        if (num < 1) return 'positive';
         return 'neutral';
     }
 
@@ -716,12 +733,23 @@
             const heal = fmt(h.heal);
             const shield = fmt(h.shield);
             const dmgCls = getCssClass(h.damage);
-            const tknCls = getTakenCssClass(h.taken);   // 承伤特殊处理
+            const tknCls = getTakenCssClass(h.taken);
             const healCls = getCssClass(h.heal);
             const shieldCls = getCssClass(h.shield);
             const iconPath = `./英雄联盟英雄头像_真名命名_173个/${h.name}.png`;
             const fallbackIcon = 'https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/default.png';
             const typeClass = 'type-' + h.type;
+
+            // 其他增益（如果有）
+            let otherHtml = '';
+            if (h.other) {
+                otherHtml = `
+                    <div class="other-buff">
+                        <span class="buff-label">⚡ 其他增益</span>
+                        <span class="buff-desc">${h.other}</span>
+                    </div>
+                `;
+            }
 
             html += `
                 <div class="card">
@@ -742,6 +770,7 @@
                         ${heal !== null ? `<span class="attr-item"><span class="label">治疗</span><span class="value ${healCls}">${heal}</span></span>` : ''}
                         ${shield !== null ? `<span class="attr-item"><span class="label">护盾</span><span class="value ${shieldCls}">${shield}</span></span>` : ''}
                     </div>
+                    ${otherHtml}
                 </div>
             `;
         });
@@ -768,7 +797,6 @@
         `;
         resultCount.textContent = '加载中…';
 
-        // 直接使用内嵌数据
         heroes = HEROES_BASE.map(h => ({ ...h }));
         filterAndRender();
     }
