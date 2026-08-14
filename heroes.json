@@ -5,6 +5,7 @@
     "taken": 1.0,
     "heal": 1.2,
     "shield": null,
+    "other": "W技能冷却减半(15/14.5/14/13.5→8/7/6/5秒)，法力消耗减半(70→35)",
     "type": "辅助",
     "remarks": [
       {
@@ -25,6 +26,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "辅助",
     "remarks": [
       {
@@ -40,6 +42,7 @@
     "taken": 0.85,
     "heal": 1.2,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": [
       {
@@ -55,6 +58,7 @@
     "taken": 0.75,
     "heal": null,
     "shield": null,
+    "other": "W技能冷却减半(18/16/14/12→9/8/7/6秒)，法力消耗减半(50→25)",
     "type": "刺客",
     "remarks": [
       {
@@ -75,6 +79,7 @@
     "taken": 1.15,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": [
       {
@@ -90,6 +95,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": [
       {
@@ -110,6 +116,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": [
       {
@@ -125,6 +132,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": "能量消耗减少33%",
     "type": "刺客",
     "remarks": [
       {
@@ -145,6 +153,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": "W技能冷却大幅降低(14.5/13.5/12.5/11.5→9.5/8.5/7.5/6.5秒)，法力消耗减半(35→15)",
     "type": "辅助",
     "remarks": [
       {
@@ -165,6 +174,7 @@
     "taken": 0.8,
     "heal": 1.2,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": [
       {
@@ -185,6 +195,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": "W技能冷却减半(10→5秒)，法力消耗减半(30→15)",
     "type": "战士",
     "remarks": [
       {
@@ -205,6 +216,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -220,6 +232,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": [
       {
@@ -235,6 +248,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -250,6 +264,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": [
       {
@@ -265,6 +280,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": "1技能击杀普通小兵叠层+10层（18层）\n1技能击杀炮兵和英雄叠层-8层（24层）",
     "type": "战士",
     "remarks": [
       {
@@ -280,6 +296,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -295,6 +312,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": [
       {
@@ -310,6 +328,7 @@
     "taken": 1.1,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -325,6 +344,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": [
       {
@@ -340,6 +360,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": [
       {
@@ -355,6 +376,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": "能量消耗减少33%",
     "type": "坦克",
     "remarks": [
       {
@@ -375,6 +397,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": [
       {
@@ -390,6 +413,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -405,6 +429,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": [
       {
@@ -420,6 +445,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": [
       {
@@ -435,6 +461,7 @@
     "taken": 1.1,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": [
       {
@@ -450,6 +477,7 @@
     "taken": 1.1,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -465,6 +493,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": [
       {
@@ -480,6 +509,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": [
       {
@@ -495,6 +525,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": [
       {
@@ -510,6 +541,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": [
       {
@@ -525,6 +557,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -540,6 +573,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": [
       {
@@ -555,6 +589,7 @@
     "taken": 1.0,
     "heal": 0.9,
     "shield": null,
+    "other": null,
     "type": "辅助",
     "remarks": [
       {
@@ -570,6 +605,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -585,6 +621,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": [
       {
@@ -600,6 +637,7 @@
     "taken": 1.1,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": [
       {
@@ -615,6 +653,7 @@
     "taken": 0.75,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -624,6 +663,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -633,6 +673,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -642,6 +683,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -651,6 +693,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -660,6 +703,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -669,6 +713,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -678,6 +723,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -687,6 +733,7 @@
     "taken": 0.7,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -696,6 +743,7 @@
     "taken": 0.8,
     "heal": 1.2,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": [
       {
@@ -716,6 +764,7 @@
     "taken": 0.75,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -725,6 +774,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -734,6 +784,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -743,6 +794,7 @@
     "taken": 0.8,
     "heal": 1.2,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -752,6 +804,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": [
       {
@@ -767,6 +820,7 @@
     "taken": 0.75,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -776,6 +830,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -785,6 +840,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -794,6 +850,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -803,6 +860,7 @@
     "taken": 0.7,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -812,6 +870,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -821,6 +880,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": "能量消耗减少33%",
     "type": "刺客",
     "remarks": [
       {
@@ -836,6 +896,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": [
       {
@@ -851,6 +912,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -860,6 +922,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": "E技能冷却减半(14→7秒)，法力消耗减半(60→30)",
     "type": "法师",
     "remarks": [
       {
@@ -875,6 +938,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -884,6 +948,7 @@
     "taken": 1.15,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -893,6 +958,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -902,6 +968,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": "E技能冷却减半(9→4.5秒)，法力消耗减半(60→30)",
     "type": "法师",
     "remarks": [
       {
@@ -917,6 +984,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -926,6 +994,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -935,6 +1004,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -944,6 +1014,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -959,6 +1030,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -968,6 +1040,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -977,6 +1050,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -986,6 +1060,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -995,6 +1070,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1004,6 +1080,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1013,6 +1090,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1022,6 +1100,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1031,6 +1110,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1040,6 +1120,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1049,6 +1130,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1058,6 +1140,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1067,6 +1150,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1076,6 +1160,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1085,6 +1170,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1094,6 +1180,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1103,6 +1190,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1112,6 +1200,7 @@
     "taken": 1.0,
     "heal": 0.9,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1121,6 +1210,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1130,6 +1220,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1139,6 +1230,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1148,6 +1240,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1157,6 +1250,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": [
       {
@@ -1172,6 +1266,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "辅助",
     "remarks": []
   },
@@ -1181,6 +1276,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1190,6 +1286,7 @@
     "taken": 1.15,
     "heal": 0.85,
     "shield": 0.85,
+    "other": null,
     "type": "辅助",
     "remarks": []
   },
@@ -1199,6 +1296,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": "W技能冷却减半(15→7.5秒)，法力消耗大幅降低(55/60/65/70→25/30/35/40)",
     "type": "辅助",
     "remarks": [
       {
@@ -1214,6 +1312,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "辅助",
     "remarks": [
       {
@@ -1229,6 +1328,7 @@
     "taken": 1.1,
     "heal": 0.9,
     "shield": null,
+    "other": null,
     "type": "辅助",
     "remarks": []
   },
@@ -1238,6 +1338,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1247,6 +1348,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": "E技能冷却减半(12→6秒)，法力消耗大幅降低(55/60/65/70→25/30/35/40)",
     "type": "坦克",
     "remarks": [
       {
@@ -1262,6 +1364,7 @@
     "taken": 1.2,
     "heal": 0.75,
     "shield": 0.75,
+    "other": null,
     "type": "辅助",
     "remarks": []
   },
@@ -1271,6 +1374,7 @@
     "taken": 1.05,
     "heal": 0.75,
     "shield": 0.75,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1280,6 +1384,7 @@
     "taken": 0.75,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1289,6 +1394,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1298,6 +1404,7 @@
     "taken": 0.95,
     "heal": 0.8,
     "shield": 0.8,
+    "other": null,
     "type": "辅助",
     "remarks": [
       {
@@ -1313,6 +1420,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1322,6 +1430,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1331,6 +1440,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1340,6 +1450,7 @@
     "taken": 0.7,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1349,6 +1460,7 @@
     "taken": 1.1,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1358,6 +1470,7 @@
     "taken": 1.1,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": [
       {
@@ -1373,6 +1486,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1382,6 +1496,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1391,6 +1506,7 @@
     "taken": 0.75,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1400,6 +1516,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1409,6 +1526,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": [
       {
@@ -1424,6 +1542,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -1433,6 +1552,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1442,6 +1562,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1451,6 +1572,7 @@
     "taken": 0.95,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1460,6 +1582,7 @@
     "taken": 0.85,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -1469,6 +1592,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -1478,6 +1602,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1487,6 +1612,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": "E技能冷却减半(18/16/14/12→9/8/7/6秒)，法力消耗大幅降低(50/55/60/65→20/25/30/35)",
     "type": "坦克",
     "remarks": [
       {
@@ -1502,6 +1628,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "射手",
     "remarks": []
   },
@@ -1511,6 +1638,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": "Q技能新增120%AP加成；W技能AP加成80%→400%",
     "type": "刺客",
     "remarks": [
       {
@@ -1526,6 +1654,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1535,6 +1664,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -1544,6 +1674,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1553,6 +1684,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1562,6 +1694,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": "E技能冷却减半(21/18/15/12→10.5/9/7.5/6秒)",
     "type": "战士",
     "remarks": [
       {
@@ -1577,6 +1710,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1586,6 +1720,7 @@
     "taken": 0.9,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -1595,6 +1730,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "刺客",
     "remarks": []
   },
@@ -1604,6 +1740,7 @@
     "taken": 1.2,
     "heal": 0.8,
     "shield": 0.8,
+    "other": null,
     "type": "辅助",
     "remarks": []
   },
@@ -1613,6 +1750,7 @@
     "taken": 0.8,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "战士",
     "remarks": []
   },
@@ -1622,6 +1760,7 @@
     "taken": 1.0,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "法师",
     "remarks": []
   },
@@ -1631,6 +1770,7 @@
     "taken": 1.05,
     "heal": null,
     "shield": null,
+    "other": null,
     "type": "坦克",
     "remarks": []
   },
@@ -1640,6 +1780,7 @@
     "taken": 0.7,
     "heal": null,
     "shield": null,
+    "other": "能量消耗减少33%",
     "type": "刺客",
     "remarks": [
       {
