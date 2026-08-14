@@ -8,7 +8,7 @@ on:
 jobs:
   convert:
     runs-on: ubuntu-latest
-    permission:          # ← 添加这一段
+    permissions:          # ← 添加这一段
       contents: write    # ← 允许推送代码
     steps:
       # 1. 拉取仓库代码
