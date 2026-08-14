@@ -201,24 +201,6 @@
             box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
         }
 
-        /* 其他增益按钮特殊样式（独立开关） */
-        .type-filter button.filter-other {
-            background: transparent;
-            color: #8b5cf6;
-            border: 1px dashed #8b5cf6;
-        }
-
-        .type-filter button.filter-other:hover {
-            background: #ede9fe;
-        }
-
-        .type-filter button.filter-other.active {
-            background: #8b5cf6;
-            color: #ffffff;
-            border-color: #8b5cf6;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
-        }
-
         /* ===== 统计 ===== */
         .stats {
             display: flex;
@@ -374,7 +356,6 @@
             text-align: center;
         }
 
-        /* 其他增益特殊样式 */
         .card .attr-item .value.other-buff {
             background: #ede9fe;
             border-color: #c4b5fd;
@@ -402,25 +383,6 @@
             color: #9ca3af;
             border-color: #f3f4f6;
             background: transparent;
-        }
-
-        .card .remark-hint {
-            margin-top: 0.6rem;
-            font-size: 0.7rem;
-            color: #9ca3af;
-            border-top: 1px solid #f3f4f6;
-            padding-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .card .remark-hint .dot {
-            display: inline-block;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #d4a853;
         }
 
         /* ===== 空状态 & 加载 ===== */
@@ -540,7 +502,45 @@
             flex: 1;
         }
 
-        /* ===== 全部更新记录 - 按英雄分组 ===== */
+        /* ===== 弹窗 - 单个英雄备注 ===== */
+        .remark-item {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+        }
+
+        .remark-item:last-child {
+            border-bottom: none;
+        }
+
+        .remark-version {
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #d4a853;
+            background: #fefce8;
+            padding: 0.05rem 0.5rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.05rem;
+        }
+
+        .remark-content {
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .remark-empty {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        /* ===== 弹窗 - 全部更新记录（按英雄分组） ===== */
         .hero-remark-group {
             display: flex;
             align-items: flex-start;
@@ -700,8 +700,6 @@
             <button data-type="刺客">刺客</button>
             <button data-type="射手">射手</button>
             <button data-type="辅助">辅助</button>
-            <!-- 其他增益：独立筛选按钮 -->
-            <button data-type="filter-other" class="filter-other" id="filterOtherBtn">✨ 其他增益</button>
         </div>
     </div>
 
@@ -746,7 +744,6 @@
     let heroes = [];
     let currentType = 'all';
     let searchText = '';
-    let filterOther = false;  // ✅ 其他增益筛选开关
 
     // ================================================================
     // DOM 引用
@@ -758,7 +755,6 @@
     const grid = document.getElementById('heroGrid');
     const noResult = document.getElementById('noResult');
     const typeButtons = document.querySelectorAll('#typeFilter button');
-    const filterOtherBtn = document.getElementById('filterOtherBtn');
 
     // ================================================================
     // 辅助函数
@@ -825,7 +821,6 @@
             const iconPath = `./英雄联盟英雄头像_真名命名_173个/${h.name}.png`;
             const fallbackIcon = 'https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/default.png';
             const typeClass = 'type-' + h.type;
-            const hasRemarks = h.remarks && h.remarks.length > 0;
 
             html += `
                 <div class="card" onclick="openHeroRemarksModal('${h.name}')">
@@ -847,7 +842,6 @@
                         ${shield !== null ? `<span class="attr-item"><span class="label">护盾</span><span class="value ${shieldCls}">${shield}</span></span>` : ''}
                         ${other ? `<span class="attr-item"><span class="label">增益</span><span class="value other-buff">${other}</span></span>` : ''}
                     </div>
-                    ${hasRemarks ? `<div class="remark-hint"><span class="dot"></span> 点击查看历史调整 (${h.remarks.length}条)</div>` : ''}
                 </div>
             `;
         });
@@ -859,9 +853,7 @@
         const filtered = heroes.filter(h => {
             const nameMatch = h.name.includes(searchText);
             const typeMatch = currentType === 'all' || h.type === currentType;
-            // 其他增益筛选：如果开启，只显示有 other 字段的英雄
-            const otherMatch = !filterOther || (h.other && h.other.trim());
-            return nameMatch && typeMatch && otherMatch;
+            return nameMatch && typeMatch;
         });
         render(filtered);
     }
@@ -929,7 +921,6 @@
 
         title.textContent = '📋 全部更新记录';
 
-        // 收集所有有备注的英雄
         const heroesWithRemarks = heroes
             .filter(h => h.remarks && h.remarks.length > 0)
             .sort((a, b) => a.name.localeCompare(b.name, 'zh'));
@@ -945,7 +936,6 @@
         let html = '';
         heroesWithRemarks.forEach(h => {
             const iconPath = `./英雄联盟英雄头像_真名命名_173个/${h.name}.png`;
-            // 备注按版本排序（最新在前）
             const sortedRemarks = [...(h.remarks || [])].sort((a, b) => {
                 const va = parseVersion(a.version);
                 const vb = parseVersion(b.version);
@@ -1040,27 +1030,11 @@
         searchInput.focus();
     });
 
-    // 类型筛选按钮（排除“其他增益”按钮）
     typeButtons.forEach(btn => {
         btn.addEventListener('click', function() {
-            const type = this.dataset.type;
-
-            // 如果是“其他增益”按钮，独立处理
-            if (type === 'filter-other') {
-                filterOther = !filterOther;
-                this.classList.toggle('active');
-                filterAndRender();
-                return;
-            }
-
-            // 普通类型按钮：互斥
-            typeButtons.forEach(b => {
-                if (b.dataset.type !== 'filter-other') {
-                    b.classList.remove('active');
-                }
-            });
+            typeButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            currentType = type;
+            currentType = this.dataset.type;
             filterAndRender();
         });
     });
@@ -1069,23 +1043,10 @@
         searchInput.value = '';
         searchText = '';
         clearBtn.classList.remove('visible');
-
-        typeButtons.forEach(b => {
-            if (b.dataset.type === 'filter-other') {
-                b.classList.remove('active');
-            } else {
-                b.classList.remove('active');
-            }
-        });
-
-        // 重置“其他增益”开关
-        filterOther = false;
-
-        // 选中“全部”
+        typeButtons.forEach(b => b.classList.remove('active'));
         const allBtn = document.querySelector('#typeFilter button[data-type="all"]');
         if (allBtn) allBtn.classList.add('active');
         currentType = 'all';
-
         filterAndRender();
         searchInput.focus();
     }
