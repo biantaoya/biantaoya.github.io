@@ -35,14 +35,14 @@ def convert_excel_to_json():
 
     print("📋 实际读取到的列名：", df.columns.tolist())
 
-    # 列名映射（新增“其他增益”字段）
+    # 列名映射（确保“其他增益”完全匹配）
     column_mapping = {
         '英雄名称': 'name',
         '造成伤害百分比': 'damage',
         '承受伤害百分比': 'taken',
         '治疗效果': 'heal',
         '护盾效果': 'shield',
-        '其他增益': 'other',      # ✅ 新增
+        '其他增益': 'other',      # 关键字段
         '英雄类型': 'type',
     }
 
@@ -63,12 +63,11 @@ def convert_excel_to_json():
             'taken': row.get('taken'),
             'heal': row.get('heal'),
             'shield': row.get('shield'),
-            'other': row.get('other'),    # ✅ 新增
+            'other': row.get('other'),    # 读取“其他增益”
             'type': row.get('type'),
             'remarks': []
         }
 
-        # 跳过空行
         if pd.isna(hero_data['name']) or str(hero_data['name']).strip() == '':
             continue
 
@@ -99,14 +98,12 @@ def convert_excel_to_json():
                 except (ValueError, TypeError):
                     hero_data[key] = None
 
-        # 处理“其他增益”字段（保留原始文本或数字）
+        # 处理“其他增益”（保留文本）
         other_val = hero_data.get('other')
         if pd.isna(other_val):
             hero_data['other'] = None
-        elif isinstance(other_val, (int, float)):
-            hero_data['other'] = str(other_val)  # 数字转为字符串
         else:
-            hero_data['other'] = str(other_val).strip() if other_val else None
+            hero_data['other'] = str(other_val).strip()
 
         heroes.append(hero_data)
 
@@ -114,7 +111,11 @@ def convert_excel_to_json():
         json.dump(heroes, f, ensure_ascii=False, indent=2)
 
     print(f'✅ 成功转换 {len(heroes)} 个英雄数据到 heroes.json')
-    print(f'📌 包含“其他增益”的英雄数：{len([h for h in heroes if h.get("other")])}')
+    # 打印包含“其他增益”的英雄数
+    with_other = [h for h in heroes if h.get('other')]
+    print(f'📌 包含“其他增益”的英雄数：{len(with_other)}')
+    if with_other:
+        print('示例：', with_other[0]['name'], '->', with_other[0]['other'])
 
 
 if __name__ == '__main__':
