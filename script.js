@@ -100,7 +100,7 @@
                         </span>
                         ${heal !== null ? `<span class="attr-item"><span class="label">治疗</span><span class="value ${healCls}">${heal}</span></span>` : ''}
                         ${shield !== null ? `<span class="attr-item"><span class="label">护盾</span><span class="value ${shieldCls}">${shield}</span></span>` : ''}
-                        ${other ? `<span class="attr-item"><span class="label">增益</span><span class="value other-buff">${other}</span></span>` : ''}
+                        ${other ? `<div class="other-buff"><span class="buff-label">✦ 增益</span><span class="buff-desc">${other}</span></div>` : ''}
                     </div>
                 </div>
             `;

@@ -346,13 +346,29 @@
             text-align: center;
         }
 
-        .card .attr-item .value.other-buff {
-            background: #ede9fe;
-            border-color: #c4b5fd;
-            color: #5b21b6;
-            min-width: auto;
-            padding: 0.05rem 0.8rem;
-        }
+/* 其他增益 - 独立行显示 */
+.card .other-buff {
+    margin-top: 0.7rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #e5e7eb;
+    font-size: 0.75rem;
+    color: #4b5563;
+    line-height: 1.5;
+    display: flex;
+    gap: 0.3rem;
+}
+
+.card .other-buff .buff-label {
+    font-weight: 500;
+    color: #6b7280;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.card .other-buff .buff-desc {
+    color: #1a1a2e;
+    word-break: break-word;
+}
 
         .card .attr-item .value.positive {
             color: #059669;
