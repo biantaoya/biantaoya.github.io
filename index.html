@@ -7,12 +7,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
 
-    <!-- ===== 头部 ===== -->
+    <!-- 头部 -->
     <div class="header">
         <div class="header-left">
             <span class="logo-icon">⚔️</span>
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <!-- ===== 筛选栏 ===== -->
+    <!-- 筛选栏 -->
     <div class="filters">
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="搜索英雄…" autofocus>
@@ -42,19 +42,19 @@
         </div>
     </div>
 
-    <!-- ===== 统计 ===== -->
+    <!-- 统计 -->
     <div class="stats">
         <span class="count" id="resultCount">加载中…</span>
         <span class="match-info" id="matchInfo"></span>
     </div>
 
-    <!-- ===== 英雄网格 ===== -->
+    <!-- 英雄网格 -->
     <div id="heroGrid" class="grid"></div>
     <div id="noResult" class="no-result" style="display:none;">
         <span>🕵️</span> 没有找到匹配的英雄
     </div>
 
-    <!-- ===== 页脚 ===== -->
+    <!-- 页脚 -->
     <div class="footer">
         <span>数据基于 7.2b / 7.1d / 6.3d 版本</span>
         <a onclick="resetAll();">重置筛选</a>
@@ -63,7 +63,7 @@
 
 </div>
 
-<!-- ===== 备注弹窗 ===== -->
+<!-- 备注弹窗 -->
 <div class="modal-overlay" id="remarkModal">
     <div class="modal">
         <div class="modal-header">
@@ -76,8 +76,6 @@
     </div>
 </div>
 
-<script>
-   
-</script>
+<script src="script.js"></script>
 </body>
 </html>
