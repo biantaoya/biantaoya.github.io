@@ -1,0 +1,40 @@
+name: 自动更新英雄数据
+
+on:
+  push:
+    paths:
+      - 'data.xlsx'  # 只有 Excel 文件变化时才触发
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    permission:          # ← 添加这一段
+      contents: write    # ← 允许推送代码
+    steps:
+      # 1. 拉取仓库代码
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      # 2. 设置 Python
+      - name: 设置 Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 3. 安装依赖
+      - name: 安装依赖
+        run: |
+          pip install pandas openpyxl
+
+      # 4. 执行转换脚本
+      - name: 转换 Excel 为 JSON
+        run: python convert.py
+
+      # 5. 提交更改回仓库
+      - name: 提交更改
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add heroes.json
+          git diff --staged --quiet || git commit -m "🤖 自动更新英雄数据"
+          git push

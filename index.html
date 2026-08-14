@@ -8,108 +8,648 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        /* 样式与上一版本完全相同，为了简洁此处省略，实际使用时保留完整样式 */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; padding: 2rem 1.5rem; display: flex; flex-direction: column; align-items: center; }
-        .container { max-width: 1280px; width: 100%; }
-        .header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 2rem; gap: 1rem; }
-        .header-left { display: flex; align-items: center; gap: 0.8rem; }
-        .logo-icon { font-size: 2.4rem; line-height: 1; }
-        h1 { font-weight: 700; font-size: 2.4rem; letter-spacing: -0.02em; color: #1a1a2e; margin: 0; }
-        .subtitle { color: #6b7280; font-size: 0.95rem; padding-left: 0.8rem; border-left: 3px solid #d4a853; font-weight: 400; }
-        .header-actions { display: flex; align-items: center; gap: 0.8rem; }
-        .version-badge { background: #e5e7eb; border-radius: 40px; padding: 0.25rem 1rem; font-size: 0.75rem; color: #4b5563; }
-        .btn-history { background: #d4a853; border: none; color: #fff; padding: 0.3rem 1.2rem; border-radius: 40px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.1s; font-family: inherit; white-space: nowrap; }
-        .btn-history:hover { background: #c49a3e; transform: scale(1.02); }
-        .filters { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; align-items: center; background: #fff; border-radius: 60px; padding: 0.5rem 0.5rem 0.5rem 1.2rem; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: border-color 0.2s, box-shadow 0.2s; }
-        .filters:focus-within { border-color: #d4a853; box-shadow: 0 2px 12px rgba(212,168,83,0.15); }
-        .search-box { flex: 2; min-width: 180px; position: relative; }
-        .search-box input { width: 100%; padding: 0.6rem 2.4rem 0.6rem 0.8rem; font-size: 0.95rem; border: none; background: transparent; color: #1a1a2e; outline: none; font-family: inherit; }
-        .search-box input::placeholder { color: #9ca3af; }
-        .search-box .clear-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #9ca3af; font-size: 1.2rem; cursor: pointer; padding: 4px 6px; display: none; border-radius: 50%; transition: background 0.2s; }
-        .search-box .clear-btn.visible { display: block; }
-        .search-box .clear-btn:hover { background: #f3f4f6; color: #4b5563; }
-        .type-filter { display: flex; gap: 0.3rem; flex-wrap: wrap; padding-right: 0.2rem; }
-        .type-filter button { background: transparent; border: none; color: #6b7280; padding: 0.35rem 0.9rem; border-radius: 40px; cursor: pointer; font-size: 0.8rem; font-weight: 500; transition: all 0.2s; white-space: nowrap; font-family: inherit; }
-        .type-filter button:hover { color: #1a1a2e; background: #f3f4f6; }
-        .type-filter button.active { background: #d4a853; color: #fff; font-weight: 600; box-shadow: 0 2px 8px rgba(212,168,83,0.3); }
-        .stats { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.8rem; font-size: 0.9rem; color: #6b7280; flex-wrap: wrap; gap: 0.5rem; }
-        .stats .count { background: #fff; padding: 0.25rem 1.2rem; border-radius: 40px; border: 1px solid #e5e7eb; font-weight: 500; font-size: 0.85rem; color: #1a1a2e; }
-        .stats .match-info { background: #f9fafb; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.8rem; color: #6b7280; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
-        .card { background: #fff; border-radius: 20px; padding: 1.2rem 1.4rem 1.4rem; border: 1px solid #e5e7eb; transition: transform 0.15s ease, border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; position: relative; overflow: hidden; cursor: pointer; }
-        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #d4a853, transparent); opacity: 0; transition: opacity 0.3s; }
-        .card:hover { border-color: #d4a853; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-        .card:hover::before { opacity: 1; }
-        .card .hero-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
-        .card .hero-header img { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #e5e7eb; object-fit: cover; background: #f9fafb; flex-shrink: 0; transition: border-color 0.2s; }
-        .card:hover .hero-header img { border-color: #d4a853; }
-        .card .hero-header .hero-name { font-size: 1.2rem; font-weight: 600; flex: 1; letter-spacing: -0.01em; color: #1a1a2e; }
-        .card .hero-header .type-badge { font-size: 0.65rem; background: #f3f4f6; color: #4b5563; padding: 0.15rem 0.7rem; border-radius: 40px; font-weight: 500; letter-spacing: 0.3px; white-space: nowrap; text-transform: uppercase; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1280px;
+            width: 100%;
+        }
+
+        /* ===== 头部 ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-icon {
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.4rem;
+            letter-spacing: -0.02em;
+            color: #1a1a2e;
+            margin: 0;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+            padding-left: 0.8rem;
+            border-left: 3px solid #d4a853;
+            font-weight: 400;
+        }
+
+        .version-badge {
+            background: #e5e7eb;
+            border-radius: 40px;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            color: #4b5563;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .update-log-btn {
+            background: #f3f4f6;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .update-log-btn:hover {
+            background: #d4a853;
+            color: #ffffff;
+        }
+
+        /* ===== 筛选栏 ===== */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+            background: #ffffff;
+            border-radius: 60px;
+            padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .filters:focus-within {
+            border-color: #d4a853;
+            box-shadow: 0 2px 12px rgba(212, 168, 83, 0.15);
+        }
+
+        .search-box {
+            flex: 2;
+            min-width: 180px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.6rem 2.4rem 0.6rem 0.8rem;
+            font-size: 0.95rem;
+            border: none;
+            background: transparent;
+            color: #1a1a2e;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-box input::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .search-box .clear-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            display: none;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .search-box .clear-btn.visible {
+            display: block;
+        }
+
+        .search-box .clear-btn:hover {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .type-filter {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            padding-right: 0.2rem;
+        }
+
+        .type-filter button {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            padding: 0.35rem 0.9rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .type-filter button:hover {
+            color: #1a1a2e;
+            background: #f3f4f6;
+        }
+
+        .type-filter button.active {
+            background: #d4a853;
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
+        }
+
+        /* ===== 统计 ===== */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .stats .count {
+            background: #ffffff;
+            padding: 0.25rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #e5e7eb;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1a1a2e;
+        }
+
+        .stats .match-info {
+            background: #f9fafb;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        /* ===== 网格 ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        /* ===== 卡片 ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.2rem 1.4rem 1.4rem;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.15s ease, border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4a853, transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            border-color: #d4a853;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card .hero-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card .hero-header img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            object-fit: cover;
+            background: #f9fafb;
+            flex-shrink: 0;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover .hero-header img {
+            border-color: #d4a853;
+        }
+
+        .card .hero-header .hero-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            flex: 1;
+            letter-spacing: -0.01em;
+            color: #1a1a2e;
+        }
+
+        .card .hero-header .type-badge {
+            font-size: 0.65rem;
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 0.15rem 0.7rem;
+            border-radius: 40px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
         .card .hero-header .type-badge.type-战士 { background: #fef3c7; color: #92400e; }
         .card .hero-header .type-badge.type-坦克 { background: #dbeafe; color: #1e40af; }
         .card .hero-header .type-badge.type-法师 { background: #e0e7ff; color: #3730a3; }
         .card .hero-header .type-badge.type-刺客 { background: #fce4ec; color: #9a1f3c; }
         .card .hero-header .type-badge.type-射手 { background: #d1fae5; color: #065f46; }
         .card .hero-header .type-badge.type-辅助 { background: #fce7f3; color: #9d174d; }
-        .card .attrs { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; margin-top: 0.2rem; }
-        .card .attr-item { display: flex; align-items: baseline; gap: 0.2rem; font-size: 0.85rem; }
-        .card .attr-item .label { color: #6b7280; font-weight: 400; font-size: 0.8rem; }
-        .card .attr-item .value { font-weight: 600; color: #1a1a2e; background: #f9fafb; padding: 0.05rem 0.6rem; border-radius: 30px; font-size: 0.8rem; border: 1px solid #e5e7eb; min-width: 2.4rem; text-align: center; }
-        .card .attr-item .value.positive { color: #059669; border-color: #a7f3d0; background: #ecfdf5; }
-        .card .attr-item .value.negative { color: #dc2626; border-color: #fca5a5; background: #fef2f2; }
-        .card .attr-item .value.neutral { color: #6b7280; border-color: #e5e7eb; background: #f9fafb; }
-        .card .attr-item .value.empty { color: #9ca3af; border-color: #f3f4f6; background: transparent; }
-        .card .other-buff { margin-top: 0.7rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 0.75rem; color: #4b5563; line-height: 1.5; display: flex; gap: 0.3rem; }
-        .card .other-buff .buff-label { font-weight: 500; color: #6b7280; white-space: nowrap; }
-        .card .other-buff .buff-desc { color: #1a1a2e; word-break: break-word; }
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1.5rem; opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0.25s ease; }
-        .modal-overlay.open { opacity: 1; visibility: visible; }
-        .modal-content { background: #fff; border-radius: 24px; max-width: 800px; width: 100%; max-height: 80vh; padding: 1.8rem 2rem 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); transform: scale(0.92) translateY(10px); transition: transform 0.25s ease, opacity 0.25s ease; opacity: 0; display: flex; flex-direction: column; overflow: hidden; }
-        .modal-overlay.open .modal-content { transform: scale(1) translateY(0); opacity: 1; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-shrink: 0; }
-        .modal-header h2 { font-size: 1.5rem; font-weight: 600; color: #1a1a2e; }
-        .modal-close { background: none; border: none; font-size: 1.8rem; line-height: 1; cursor: pointer; color: #9ca3af; transition: color 0.2s; padding: 0 0.2rem; }
-        .modal-close:hover { color: #1a1a2e; }
-        .modal-body { overflow-y: auto; padding-right: 0.2rem; flex: 1; }
-        .modal-body::-webkit-scrollbar { width: 5px; }
-        .modal-body::-webkit-scrollbar-track { background: #f0f2f5; border-radius: 10px; }
-        .modal-body::-webkit-scrollbar-thumb { background: #d4a853; border-radius: 10px; }
-        .history-item { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.7rem 0; border-bottom: 1px solid #f0f2f5; }
-        .history-item:last-child { border-bottom: none; }
-        .history-item img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #e5e7eb; flex-shrink: 0; margin-top: 0.1rem; }
-        .history-item .info { flex: 1; min-width: 0; }
-        .history-item .info .h-name { font-weight: 600; font-size: 0.95rem; color: #1a1a2e; margin-bottom: 0.2rem; }
-        .history-item .info .h-notes { font-size: 0.8rem; color: #4b5563; line-height: 1.6; }
-        .history-item .info .h-notes .update-entry { display: block; padding: 0.1rem 0; }
-        .history-item .info .h-notes .update-entry .version { font-weight: 600; color: #d4a853; margin-right: 0.3rem; }
-        .no-notes { text-align: center; padding: 2rem 0; color: #9ca3af; }
-        .no-result { text-align: center; padding: 4rem 0; color: #6b7280; font-size: 1.1rem; }
-        .no-result span { display: block; font-size: 2.8rem; margin-bottom: 0.5rem; }
-        .loading-tip { text-align: center; padding: 4rem 0; color: #6b7280; font-size: 1rem; }
-        .loading-tip .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #e5e7eb; border-top-color: #d4a853; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 1rem; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .footer { margin-top: 3.5rem; font-size: 0.8rem; color: #6b7280; text-align: center; border-top: 1px solid #e5e7eb; padding-top: 1.8rem; width: 100%; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-        .footer a { color: #6b7280; text-decoration: none; transition: color 0.2s; border-bottom: 1px dotted transparent; }
-        .footer a:hover { color: #d4a853; border-bottom-color: #d4a853; }
-        @media (max-width: 768px) { body { padding: 1.2rem 0.8rem; } .filters { border-radius: 30px; padding: 0.4rem 0.4rem 0.4rem 1rem; flex-wrap: wrap; gap: 0.5rem; } .search-box { min-width: 140px; } .type-filter button { font-size: 0.75rem; padding: 0.25rem 0.6rem; } .grid { grid-template-columns: 1fr; } .card .hero-header img { width: 38px; height: 38px; } .header-left h1 { font-size: 1.8rem; } .logo-icon { font-size: 1.8rem; } .header-actions { gap: 0.4rem; } .btn-history { font-size: 0.7rem; padding: 0.2rem 0.8rem; } .modal-content { padding: 1.2rem; } }
-        @media (max-width: 480px) { .filters { padding: 0.3rem 0.3rem 0.3rem 0.8rem; } .search-box input { font-size: 0.85rem; padding: 0.4rem 1.8rem 0.4rem 0.4rem; } .type-filter button { font-size: 0.7rem; padding: 0.2rem 0.5rem; } .card { padding: 0.9rem 1rem; } .stats { font-size: 0.8rem; } .card .other-buff { font-size: 0.7rem; } .history-item img { width: 28px; height: 28px; } .history-item .info .h-name { font-size: 0.85rem; } }
+
+        .card .attrs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        .card .attr-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.2rem;
+            font-size: 0.85rem;
+        }
+
+        .card .attr-item .label {
+            color: #6b7280;
+            font-weight: 400;
+            font-size: 0.8rem;
+        }
+
+        .card .attr-item .value {
+            font-weight: 600;
+            color: #1a1a2e;
+            background: #f9fafb;
+            padding: 0.05rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            border: 1px solid #e5e7eb;
+            min-width: 2.4rem;
+            text-align: center;
+        }
+
+        .card .attr-item .value.positive {
+            color: #059669;
+            border-color: #a7f3d0;
+            background: #ecfdf5;
+        }
+        .card .attr-item .value.negative {
+            color: #dc2626;
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+        .card .attr-item .value.neutral {
+            color: #6b7280;
+            border-color: #e5e7eb;
+            background: #f9fafb;
+        }
+        .card .attr-item .value.empty {
+            color: #9ca3af;
+            border-color: #f3f4f6;
+            background: transparent;
+        }
+
+        /* 卡片底部备注提示 */
+        .card .remark-hint {
+            margin-top: 0.6rem;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            border-top: 1px solid #f3f4f6;
+            padding-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .card .remark-hint .dot {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #d4a853;
+        }
+
+        /* ===== 空状态 & 加载 ===== */
+        .no-result {
+            text-align: center;
+            padding: 4rem 0;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .no-result span {
+            display: block;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-tip {
+            text-align: center;
+            padding: 4rem 0;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .loading-tip .spinner {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #d4a853;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== 弹窗 ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #ffffff;
+            border-radius: 24px;
+            max-width: 720px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            animation: modalFadeIn 0.25s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(12px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .modal-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin: 0;
+        }
+
+        .modal-header .modal-close {
+            background: #f3f4f6;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .modal-header .modal-close:hover {
+            background: #e5e7eb;
+            color: #1a1a2e;
+        }
+
+        .modal-body {
+            padding: 1.2rem 1.5rem 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .remark-item {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+        }
+
+        .remark-item:last-child {
+            border-bottom: none;
+        }
+
+        .remark-version {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #d4a853;
+            background: #fefce8;
+            padding: 0.1rem 0.6rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.05rem;
+        }
+
+        .remark-content {
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .remark-empty {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        .version-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .version-group .version-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #d4a853;
+            background: #fefce8;
+            padding: 0.2rem 0.8rem;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .version-group .remark-item {
+            padding-left: 0.5rem;
+        }
+
+        .version-group .remark-item .remark-hero {
+            font-weight: 500;
+            color: #1a1a2e;
+            margin-right: 0.4rem;
+        }
+
+        /* ===== 页脚 ===== */
+        .footer {
+            margin-top: 3.5rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1.8rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer a {
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.2s;
+            border-bottom: 1px dotted transparent;
+            cursor: pointer;
+        }
+
+        .footer a:hover {
+            color: #d4a853;
+            border-bottom-color: #d4a853;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 768px) {
+            body { padding: 1.2rem 0.8rem; }
+            .filters {
+                border-radius: 30px;
+                padding: 0.4rem 0.4rem 0.4rem 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .search-box { min-width: 140px; }
+            .type-filter button { font-size: 0.75rem; padding: 0.25rem 0.6rem; }
+            .grid { grid-template-columns: 1fr; }
+            .card .hero-header img { width: 38px; height: 38px; }
+            .header-left h1 { font-size: 1.8rem; }
+            .logo-icon { font-size: 1.8rem; }
+            .header-right .subtitle { display: none; }
+            .update-log-btn { font-size: 0.7rem; padding: 0.3rem 0.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            .filters { padding: 0.3rem 0.3rem 0.3rem 0.8rem; }
+            .search-box input { font-size: 0.85rem; padding: 0.4rem 1.8rem 0.4rem 0.4rem; }
+            .type-filter button { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+            .card { padding: 0.9rem 1rem; }
+            .stats { font-size: 0.8rem; }
+            .modal { max-width: 100%; max-height: 90vh; border-radius: 16px; }
+            .modal-header h2 { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
+
+    <!-- ===== 头部 ===== -->
     <div class="header">
         <div class="header-left">
             <span class="logo-icon">⚔️</span>
             <h1>符文大乱斗</h1>
-            <span class="version-badge">v7.2c</span>
+            <span class="version-badge">v7.2b</span>
         </div>
-        <div class="header-actions">
-            <button class="btn-history" id="btnAllHistory">📜 全部更新记录</button>
-            <div class="subtitle">英雄属性调整 </div>
+        <div class="header-right">
+            <button class="update-log-btn" onclick="openAllRemarksModal()">📋 全部更新记录</button>
+            <div class="subtitle">英雄属性调整 · 实时查询</div>
         </div>
     </div>
 
+    <!-- ===== 筛选栏 ===== -->
     <div class="filters">
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="搜索英雄…" autofocus>
@@ -126,196 +666,51 @@
         </div>
     </div>
 
+    <!-- ===== 统计 ===== -->
     <div class="stats">
         <span class="count" id="resultCount">加载中…</span>
         <span class="match-info" id="matchInfo"></span>
     </div>
 
+    <!-- ===== 英雄网格 ===== -->
     <div id="heroGrid" class="grid"></div>
     <div id="noResult" class="no-result" style="display:none;">
         <span>🕵️</span> 没有找到匹配的英雄
     </div>
 
+    <!-- ===== 页脚 ===== -->
     <div class="footer">
-        <span>数据基于 7.2c / 7.2b / 7.1d / 6.3d 版本</span>
-        <a href="#" onclick="resetAll();return false;">重置筛选</a>
+        <span>数据基于 7.2b / 7.1d / 6.3d 版本</span>
+        <a onclick="resetAll();">重置筛选</a>
         <span>分类基于英雄联盟手游官网</span>
     </div>
+
 </div>
 
-<div class="modal-overlay" id="historyModal">
-    <div class="modal-content">
+<!-- ===== 备注弹窗 ===== -->
+<div class="modal-overlay" id="remarkModal">
+    <div class="modal">
         <div class="modal-header">
-            <h2 id="modalTitle">📜 更新记录</h2>
-            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 id="modalTitle">📝 历史调整</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
-        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-body" id="modalBody">
+            <!-- 动态渲染 -->
+        </div>
     </div>
 </div>
 
 <script>
-    // ======================= 英雄数据（根据最新表格更新备注） ======================
-    const HEROES_BASE = [
-        // ===== 战士 =====
-        { name: "艾瑞莉娅", damage: 1.15, taken: 0.85, heal: 1.2, shield: null, other: null, type: "战士", note1: null, note2: "造成伤害：110% >>> 115%，7.2b版本" },
-        { name: "瑞雯", damage: 1.15, taken: 0.8, heal: null, shield: null, other: null, type: "战士", note1: "承受伤害从85%降低至80%，7.2c版本", note2: "造成伤害：110% >>> 115%，7.2b版本" },
-        { name: "赵信", damage: 1.15, taken: 0.8, heal: 1.2, shield: null, other: null, type: "战士", note1: "承受伤害从85%降低至80%，7.2c版本", note2: "造成伤害：105% >>> 115%，7.2b版本" },
-        { name: "嘉文四世", damage: 1.05, taken: 0.95, heal: null, shield: null, other: "W技能冷却减半(10→5秒)，法力消耗减半(30→15)", type: "战士", note1: "W技能冷却与蓝耗减半，7.2c版本", note2: "造成伤害：100% >>> 105%，7.2b版本" },
-        { name: "瑟提", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "战士", note1: null, note2: "7.1d版本调整，造成伤害从100%削弱至90%" },
-        { name: "亚托克斯", damage: 1.05, taken: 0.75, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "卡蜜尔", damage: 1.2, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "德莱厄斯", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "菲奥娜", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "格温", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "赫卡里姆", damage: 1.15, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "贾克斯", damage: 1.15, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "杰斯", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "李青", damage: 1.2, taken: 0.7, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "奥拉夫", damage: 1.1, taken: 0.8, heal: 1.2, shield: null, other: null, type: "战士", note1: "承受伤害从85%降低至80%，7.2c版本", note2: "治疗效果+20%（120%）" },
-        { name: "潘森", damage: 1, taken: 0.75, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "雷克顿", damage: 1.1, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "泰达米尔", damage: 1.2, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "沃里克", damage: 1.15, taken: 0.8, heal: 1.2, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "亚索", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: "治疗效果+20%（120%）" },
-        { name: "永恩", damage: 1.05, taken: 0.75, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "佛耶戈", damage: 1.1, taken: 0.8, heal: null, shield: null, other: null, type: "战士", note1: "承受伤害从85%降低至80%，7.2c版本", note2: null },
-        { name: "孙悟空", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "安蓓萨", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "云阿娜", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "斯卡纳", damage: 1.1, taken: 0.9, heal: null, shield: null, other: "E技能冷却减半(18/16/14/12→9/8/7/6秒)，法力消耗大幅降低(50/55/60/65→20/25/30/35)", type: "战士", note1: "E技能冷却与蓝耗减半，7.2c版本", note2: null },
-        { name: "易", damage: 1.05, taken: 0.8, heal: null, shield: null, other: "Q技能新增120%AP加成；W技能AP加成80%→400%", type: "战士", note1: "技能AP加成调整，7.2c版本", note2: null },
-        { name: "沃利贝尔", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "波比", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "泰隆", damage: 1.2, taken: 0.8, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "纳尔", damage: 1.1, taken: 0.9, heal: null, shield: null, other: "E技能冷却减半(21/18/15/12→10.5/9/7.5/6秒)", type: "战士", note1: "E技能冷却减半，7.2c版本", note2: null },
-        { name: "蔚", damage: 1.1, taken: 0.8, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "赛恩", damage: 1, taken: 1.05, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-        { name: "盖伦", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "战士", note1: null, note2: "7.1d版本调整，承受伤害从95%回调至100%" },
-        { name: "希瓦娜", damage: 1.1, taken: 0.95, heal: null, shield: null, other: null, type: "战士", note1: null, note2: "7.1d版本调整，承受伤害从85%回调至95%" },
-        { name: "慎", damage: 1, taken: 1, heal: null, shield: null, other: "能量消耗减少33%", type: "战士", note1: "能量消耗减少33%，7.2c版本", note2: "7.1d版本调整，造成伤害从110%回调至100%" },
-        { name: "魔腾", damage: 1.15, taken: 0.75, heal: null, shield: null, other: "W技能冷却减半(18/16/14/12→9/8/7/6秒)，法力消耗减半(50→25)", type: "战士", note1: "W技能冷却与蓝耗减半，7.2c版本", note2: "受到伤害：85% >>> 75%，7.2b版本" },
-        { name: "凯隐", damage: 0.95, taken: 0.85, heal: null, shield: null, other: null, type: "战士", note1: null, note2: null },
-
-        // ===== 坦克 =====
-        { name: "阿利斯塔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: "7.1d版本调整，承受伤害从90%回调至100%" },
-        { name: "布隆", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "蕾欧娜", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: "7.1d版本调整，承受伤害从95%回调至100%" },
-        { name: "诺提勒斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "墨菲特", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "拉莫斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: "7.1d版本调整，承受伤害从95%回调至100%" },
-        { name: "奥恩", damage: 1.05, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "科加斯", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "古拉加斯", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "蒙多医生", damage: 1, taken: 1.1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: "6.3d版本调整，极地大乱斗承受伤害从90%回调至100%" },
-        { name: "加里奥", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: "受到伤害：100% >>> 90%，7.2b版本" },
-        { name: "内瑟斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: "1技能击杀普通小兵叠层+10层（18层）1技能击杀炮兵和英雄叠层-8层（24层），同步极地大乱斗，7.2b版本" },
-        { name: "努努和威朗普", damage: 1.15, taken: 0.85, heal: null, shield: null, other: "E技能冷却减半(12→6秒)，法力消耗大幅降低(55/60/65/70→25/30/35/40)", type: "坦克", note1: "E技能冷却与蓝耗减半，7.2c版本", note2: null },
-        { name: "茂凯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "阿木木", damage: 1, taken: 0.85, heal: null, shield: null, other: null, type: "坦克", note1: "承受伤害从90%降低至85%，7.2c版本", note2: null },
-        { name: "布里茨", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "锤石", damage: 1, taken: 0.75, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "芮尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-        { name: "奎桑提", damage: 1.1, taken: 1, heal: null, shield: null, other: null, type: "坦克", note1: null, note2: null },
-
-        // ===== 法师 =====
-        { name: "阿狸", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "受到伤害：100% >>> 90%，7.2b版本" },
-        { name: "安妮", damage: 1.2, taken: 0.9, heal: null, shield: null, other: "E技能冷却减半(14→7秒)，法力消耗减半(60→30)", type: "法师", note1: "E技能冷却与蓝耗减半，7.2c版本", note2: null },
-        { name: "布兰德", damage: 1, taken: 1.05, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "吉格斯", damage: 0.95, taken: 1.1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "7.1d版本调整，造成伤害从85%增强至95%，承受伤害从120%降低至110%" },
-        { name: "拉克丝", damage: 0.85, taken: 1.15, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "丽桑卓", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "造成伤害：100% >>> 105%，7.2b版本" },
-        { name: "奥莉安娜", damage: 0.9, taken: 1, heal: null, shield: null, other: "E技能冷却减半(9→4.5秒)，法力消耗减半(60→30)", type: "法师", note1: "E技能冷却与蓝耗减半，7.2c版本", note2: null },
-        { name: "辛德拉", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "瑞兹", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "维克托", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "黑默丁格", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "兰博", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "奈德丽", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "阿萝拉", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "6.3d版本调整，承受伤害从100%降低至90%" },
-        { name: "斯维因", damage: 1.1, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "6.3d版本调整，造成伤害+10%，治疗效果+10%" },
-        { name: "维迦", damage: 1, taken: 1.1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "7.1d版本调整，承受伤害从100%增加至110%" },
-        { name: "崔斯特", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "佐伊", damage: 1.25, taken: 0.95, heal: null, shield: null, other: null, type: "法师", note1: "造成伤害从120%提升至125%，7.2c版本", note2: null },
-        { name: "维克兹", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "费德提克", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "莫德凯撒", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "萨勒芬妮", damage: 0.8, taken: 1.2, heal: 0.8, shield: 0.8, other: null, type: "法师", note1: null, note2: null },
-        { name: "黛安娜", damage: 1.15, taken: 1.15, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "造成伤害：110% >>> 115%，受到伤害：110% >>> 115%，7.2b版本" },
-        { name: "奥瑞利安·索尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: "7.1d版本调整，承受伤害从90%回调至100%" },
-        { name: "基兰", damage: 1, taken: 0.85, heal: null, shield: null, other: "W技能冷却大幅降低(14.5/13.5/12.5/11.5→9.5/8.5/7.5/6.5秒)，法力消耗减半(35→15)", type: "法师", note1: "W技能冷却与蓝耗减半，7.2c版本", note2: "受到伤害：100% >>> 85%，7.2b版本；" },
-        { name: "卡尔玛", damage: 0.95, taken: 1.05, heal: null, shield: null, other: "W技能冷却减半(15→7.5秒)，法力消耗大幅降低(55/60/65/70→25/30/35/40)", type: "法师", note1: "W技能冷却与蓝耗减半，7.2c版本", note2: null },
-        { name: "莫甘娜", damage: 0.8, taken: 1.05, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "塔莉垭", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "辛吉德", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-        { name: "凯尔", damage: 0.9, taken: 1.1, heal: null, shield: null, other: null, type: "法师", note1: null, note2: null },
-
-        // ===== 刺客 =====
-        { name: "阿卡丽", damage: 1.1, taken: 0.7, heal: null, shield: null, other: "能量消耗减少33%", type: "刺客", note1: "能量消耗减少33%，7.2c版本", note2: null },
-        { name: "艾克", damage: 1.1, taken: 0.85, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: null },
-        { name: "伊芙琳", damage: 1.05, taken: 0.7, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: null },
-        { name: "菲兹", damage: 1.05, taken: 0.8, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: null },
-        { name: "卡特琳娜", damage: 1.05, taken: 0.75, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: null },
-        { name: "卡兹克", damage: 1.2, taken: 0.7, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: null },
-        { name: "雷恩加尔", damage: 1.1, taken: 0.8, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: null },
-        { name: "劫", damage: 1.1, taken: 0.8, heal: null, shield: null, other: "能量消耗减少33%", type: "刺客", note1: "能量消耗减少33%，7.2c版本", note2: null },
-        { name: "派克", damage: 1.2, taken: 1, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: "造成伤害：110% >>> 120%，7.2b版本" },
-        { name: "卡萨丁", damage: 1.05, taken: 0.85, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: null },
-        { name: "凯南", damage: 1.1, taken: 0.85, heal: null, shield: null, other: "能量消耗减少33%", type: "刺客", note1: "能量消耗减少33%，7.2c版本", note2: "受到伤害：100% >>> 85%，7.2b版本" },
-        { name: "薇古丝", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "刺客", note1: null, note2: "造成伤害：100% >>> 110%，7.2b版本" },
-
-        // ===== 射手 =====
-        { name: "艾希", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "凯特琳", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "德莱文", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "伊泽瑞尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "格雷福斯", damage: 1.15, taken: 0.8, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "金克丝", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "烬", damage: 0.9, taken: 1.05, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "卢锡安", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "莎弥拉", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "希维尔", damage: 0.95, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "崔丝塔娜", damage: 0.95, taken: 1.05, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "尼菈", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "泽丽", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "薇恩", damage: 1, taken: 1.1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: "7.1d版本调整，造成伤害从105%回调至100%，承受伤害从100%增加至110%" },
-        { name: "韦鲁斯", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: "7.1d版本调整，造成伤害从95%回调至100%" },
-        { name: "厄运小姐", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: "7.1d版本调整，造成伤害从92%回调至100%，承受伤害从103%回调至100%" },
-        { name: "霞", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: "7.1d版本调整，造成伤害从95%回调至100%" },
-        { name: "图奇", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: "7.1d版本调整，造成伤害从95%回调至100%，承受伤害从105%回调至100%" },
-        { name: "库奇", damage: 1.1, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "斯莫德", damage: 0.95, taken: 1.05, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "卡莎", damage: 1, taken: 0.95, heal: null, shield: null, other: null, type: "射手", note1: null, note2: "6.3d版本调整，造成伤害从110%回调至100%" },
-        { name: "赛娜", damage: 1, taken: 1, heal: 0.9, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "克格莫", damage: 0.9, taken: 1.1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "卡莉丝塔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "阿克尚", damage: 1.1, taken: 0.95, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-        { name: "千珏", damage: 1.1, taken: 0.9, heal: null, shield: null, other: null, type: "射手", note1: null, note2: null },
-
-        // ===== 辅助 =====
-        { name: "迦娜", damage: 1, taken: 1.15, heal: 0.85, shield: 0.85, other: null, type: "辅助", note1: null, note2: null },
-        { name: "璐璐", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: "治疗效果-10%（90%）" },
-        { name: "索拉卡", damage: 1, taken: 1.05, heal: 0.75, shield: 0.75, other: null, type: "辅助", note1: null, note2: null },
-        { name: "娜美", damage: 1, taken: 1.1, heal: 0.9, shield: null, other: null, type: "辅助", note1: null, note2: null },
-        { name: "娑娜", damage: 0.8, taken: 1.2, heal: 0.75, shield: 0.75, other: null, type: "辅助", note1: null, note2: null },
-        { name: "悠米", damage: 1, taken: 0.95, heal: 0.8, shield: 0.8, other: null, type: "辅助", note1: null, note2: "治疗效果-15%（85%）护盾效果-15%（85%）" },
-        { name: "巴德", damage: 1, taken: 1, heal: 1.2, shield: null, other: "W技能冷却减半(15/14.5/14/13.5→8/7/6/5秒)，法力消耗减半(70→35)", type: "辅助", note1: "W技能冷却与蓝耗减半，7.2c版本", note2: "治疗效果+20%（120%），7.2b版本" },
-        { name: "洛", damage: 1.05, taken: 0.9, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: "造成伤害：100% >>> 105%，受到伤害：95% >>> 90%" },
-        { name: "米利欧", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: "6.3d版本调整，治疗效果-10%（90%）" },
-        { name: "诺拉", damage: 0.9, taken: 1, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: null },
-        { name: "提莫", damage: 0.85, taken: 1, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: null },
-        { name: "厄加特", damage: 1, taken: 0.9, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: null },
-        { name: "婕拉", damage: 1.05, taken: 0.95, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: null },
-        { name: "莉莉娅", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: "6.3d版本调整，承受伤害从90%回调至100%" },
-        { name: "梅尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: null },
-        { name: "弗拉基米尔", damage: 1, taken: 1, heal: null, shield: null, other: null, type: "辅助", note1: null, note2: "7.1d版本调整，承受伤害从95%回调至100%" },
-    ];
-
-    // ======================= 全局状态 ======================
+    // ================================================================
+    // 全局状态
+    // ================================================================
     let heroes = [];
     let currentType = 'all';
     let searchText = '';
 
-    // ======================= DOM ==========================
+    // ================================================================
+    // DOM 引用
+    // ================================================================
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearBtn');
     const resultCount = document.getElementById('resultCount');
@@ -323,43 +718,10 @@
     const grid = document.getElementById('heroGrid');
     const noResult = document.getElementById('noResult');
     const typeButtons = document.querySelectorAll('#typeFilter button');
-    const btnAllHistory = document.getElementById('btnAllHistory');
-    const modalOverlay = document.getElementById('historyModal');
-    const modalClose = document.getElementById('modalClose');
-    const modalBody = document.getElementById('modalBody');
-    const modalTitle = document.getElementById('modalTitle');
 
-    // ======================= 辅助函数 ======================
-    function parseNote(note) {
-        if (!note) return null;
-        // 替换“同步极地大乱斗”为“极地大乱斗同步该改动”
-        let corrected = note.replace(/同步极地大乱斗/g, '极地大乱斗同步该改动');
-        const versionMatch = corrected.match(/(7\.2c|7\.2b|7\.1d|6\.3d)版本?/);
-        let version = null;
-        let desc = corrected;
-        if (versionMatch) {
-            version = versionMatch[1] + '版本';
-            desc = corrected.replace(versionMatch[0], '').replace(/^[,，\s]+/, '').replace(/[,，\s]+$/, '');
-        }
-        if (!desc.trim()) desc = corrected;
-        return { version: version || '其他版本', desc: desc.trim() };
-    }
-
-    function parseHeroNotes(hero) {
-        const updates = [];
-        if (hero.note1) {
-            const entry = parseNote(hero.note1);
-            if (entry) updates.push(entry);
-        }
-        if (hero.note2) {
-            const entry = parseNote(hero.note2);
-            if (entry) updates.push(entry);
-        }
-        updates.sort((a, b) => b.version.localeCompare(a.version));
-        return updates;
-    }
-
-    // ======================= 渲染 ==========================
+    // ================================================================
+    // 辅助函数
+    // ================================================================
     function fmt(value) {
         if (value === null || value === undefined) return null;
         const num = parseFloat(value);
@@ -385,6 +747,18 @@
         return 'neutral';
     }
 
+    function parseVersion(versionStr) {
+        if (!versionStr) return [0, 0, ''];
+        const match = versionStr.match(/^(\d+)\.(\d+)([a-zA-Z]?)/);
+        if (match) {
+            return [parseInt(match[1]), parseInt(match[2]), match[3] || ''];
+        }
+        return [0, 0, ''];
+    }
+
+    // ================================================================
+    // 渲染函数
+    // ================================================================
     function render(heroList) {
         if (heroList.length === 0) {
             grid.innerHTML = '';
@@ -409,26 +783,28 @@
             const iconPath = `./英雄联盟英雄头像_真名命名_173个/${h.name}.png`;
             const fallbackIcon = 'https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/default.png';
             const typeClass = 'type-' + h.type;
-
-            let otherHtml = '';
-            if (h.other) {
-                otherHtml = `<div class="other-buff"><span class="buff-label">⚡ 其他增益</span><span class="buff-desc">${h.other}</span></div>`;
-            }
+            const hasRemarks = h.remarks && h.remarks.length > 0;
 
             html += `
-                <div class="card" data-hero="${h.name}">
+                <div class="card" onclick="openHeroRemarksModal('${h.name}')">
                     <div class="hero-header">
                         <img src="${iconPath}" alt="${h.name}" loading="lazy" onerror="this.src='${fallbackIcon}'">
                         <span class="hero-name">${h.name}</span>
                         <span class="type-badge ${typeClass}">${h.type}</span>
                     </div>
                     <div class="attrs">
-                        <span class="attr-item"><span class="label">伤害</span><span class="value ${dmgCls}">${dmg || '—'}</span></span>
-                        <span class="attr-item"><span class="label">承伤</span><span class="value ${tknCls}">${tkn || '—'}</span></span>
+                        <span class="attr-item">
+                            <span class="label">伤害</span>
+                            <span class="value ${dmgCls}">${dmg || '—'}</span>
+                        </span>
+                        <span class="attr-item">
+                            <span class="label">承伤</span>
+                            <span class="value ${tknCls}">${tkn || '—'}</span>
+                        </span>
                         ${heal !== null ? `<span class="attr-item"><span class="label">治疗</span><span class="value ${healCls}">${heal}</span></span>` : ''}
                         ${shield !== null ? `<span class="attr-item"><span class="label">护盾</span><span class="value ${shieldCls}">${shield}</span></span>` : ''}
                     </div>
-                    ${otherHtml}
+                    ${hasRemarks ? `<div class="remark-hint"><span class="dot"></span> 点击查看历史调整 (${h.remarks.length}条)</div>` : ''}
                 </div>
             `;
         });
@@ -445,94 +821,170 @@
         render(filtered);
     }
 
-    // ======================= 模态框 ==========================
-    function showHistory(heroOrAll) {
-        modalBody.innerHTML = '';
-        if (heroOrAll === 'all') {
-            modalTitle.textContent = '📜 全部更新记录';
-            const withNotes = heroes.filter(h => h.updates && h.updates.length > 0);
-            if (withNotes.length === 0) {
-                modalBody.innerHTML = `<div class="no-notes">暂无更新记录</div>`;
-            } else {
-                withNotes.sort((a, b) => a.name.localeCompare(b.name));
-                let html = '';
-                withNotes.forEach(h => {
-                    const iconPath = `./英雄联盟英雄头像_真名命名_173个/${h.name}.png`;
-                    const fallbackIcon = 'https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/default.png';
-                    let updatesHtml = '';
-                    h.updates.forEach(u => {
-                        updatesHtml += `<span class="update-entry"><span class="version">${u.version}：</span>${u.desc}</span>`;
-                    });
-                    html += `
-                        <div class="history-item">
-                            <img src="${iconPath}" alt="${h.name}" loading="lazy" onerror="this.src='${fallbackIcon}'">
-                            <div class="info">
-                                <div class="h-name">${h.name}</div>
-                                <div class="h-notes">${updatesHtml}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-                modalBody.innerHTML = html;
+    // ================================================================
+    // 从 heroes.json 加载数据
+    // ================================================================
+    async function loadHeroesFromJson() {
+        try {
+            const response = await fetch('heroes.json');
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('加载 heroes.json 失败:', error);
+            grid.innerHTML = `
+                <div class="loading-tip" style="color: #dc2626;">
+                    <span style="font-size: 2rem;">❌</span>
+                    <p>数据加载失败，请检查网络或刷新重试</p>
+                    <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">${error.message}</p>
+                </div>
+            `;
+            resultCount.textContent = '加载失败';
+            return [];
+        }
+    }
+
+    // ================================================================
+    // 弹窗相关
+    // ================================================================
+    function openHeroRemarksModal(heroName) {
+        const hero = heroes.find(h => h.name === heroName);
+        if (!hero) return;
+
+        const title = document.getElementById('modalTitle');
+        const body = document.getElementById('modalBody');
+
+        title.textContent = `📝 ${hero.name} · 历史调整`;
+
+        const remarks = hero.remarks || [];
+        if (remarks.length === 0) {
+            body.innerHTML = `<div class="remark-empty">该英雄暂无历史调整记录</div>`;
         } else {
-            const hero = heroOrAll;
-            modalTitle.textContent = `📜 ${hero.name} 更新记录`;
-            if (!hero.updates || hero.updates.length === 0) {
-                modalBody.innerHTML = `<div class="no-notes">该英雄暂无更新记录</div>`;
-            } else {
-                const iconPath = `./英雄联盟英雄头像_真名命名_173个/${hero.name}.png`;
-                const fallbackIcon = 'https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/default.png';
-                let updatesHtml = '';
-                hero.updates.forEach(u => {
-                    updatesHtml += `<span class="update-entry"><span class="version">${u.version}：</span>${u.desc}</span>`;
-                });
-                modalBody.innerHTML = `
-                    <div class="history-item">
-                        <img src="${iconPath}" alt="${hero.name}" loading="lazy" onerror="this.src='${fallbackIcon}'">
-                        <div class="info">
-                            <div class="h-name">${hero.name}</div>
-                            <div class="h-notes">${updatesHtml}</div>
-                        </div>
+            let html = '';
+            remarks.forEach(r => {
+                const versionDisplay = r.version ? `<span class="remark-version">${r.version}</span>` : '';
+                html += `
+                    <div class="remark-item">
+                        ${versionDisplay}
+                        <span class="remark-content">${r.content}</span>
                     </div>
                 `;
-            }
+            });
+            body.innerHTML = html;
         }
-        modalOverlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
+
+        document.getElementById('remarkModal').classList.add('active');
+    }
+
+    function openAllRemarksModal() {
+        const title = document.getElementById('modalTitle');
+        const body = document.getElementById('modalBody');
+
+        title.textContent = '📋 全部更新记录';
+
+        const allRemarks = [];
+        heroes.forEach(h => {
+            (h.remarks || []).forEach(r => {
+                allRemarks.push({
+                    ...r,
+                    heroName: h.name
+                });
+            });
+        });
+
+        if (allRemarks.length === 0) {
+            body.innerHTML = `<div class="remark-empty">暂无任何更新记录</div>`;
+            document.getElementById('remarkModal').classList.add('active');
+            return;
+        }
+
+        const sorted = allRemarks.sort((a, b) => {
+            const va = parseVersion(a.version);
+            const vb = parseVersion(b.version);
+            if (va[0] !== vb[0]) return vb[0] - va[0];
+            if (va[1] !== vb[1]) return vb[1] - va[1];
+            return (vb[2] || '').localeCompare(va[2] || '');
+        });
+
+        const groups = {};
+        sorted.forEach(r => {
+            const key = r.version || '未标记版本';
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(r);
+        });
+
+        let html = '';
+        for (const [version, items] of Object.entries(groups)) {
+            html += `<div class="version-group">`;
+            html += `<div class="version-title">📦 ${version}</div>`;
+            items.forEach(r => {
+                html += `
+                    <div class="remark-item">
+                        <span class="remark-content">
+                            <span class="remark-hero">${r.heroName}</span>
+                            ${r.content}
+                        </span>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+        }
+
+        body.innerHTML = html;
+        document.getElementById('remarkModal').classList.add('active');
     }
 
     function closeModal() {
-        modalOverlay.classList.remove('open');
-        document.body.style.overflow = '';
+        document.getElementById('remarkModal').classList.remove('active');
     }
 
-    // ======================= 事件绑定 ==========================
-    btnAllHistory.addEventListener('click', function() { showHistory('all'); });
-    modalClose.addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', function(e) {
-        if (e.target === modalOverlay) closeModal();
-    });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeModal();
+    document.getElementById('remarkModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
     });
 
-    grid.addEventListener('click', function(e) {
-        const card = e.target.closest('.card');
-        if (!card) return;
-        const heroName = card.dataset.hero;
-        if (!heroName) return;
-        const hero = heroes.find(h => h.name === heroName);
-        if (hero) showHistory(hero);
-    });
+    // ================================================================
+    // 初始化
+    // ================================================================
+    async function init() {
+        grid.innerHTML = `
+            <div class="loading-tip">
+                <div class="spinner"></div>
+                <div>正在加载英雄数据…</div>
+            </div>
+        `;
+        resultCount.textContent = '加载中…';
 
+        heroes = await loadHeroesFromJson();
+
+        if (heroes && heroes.length > 0) {
+            filterAndRender();
+        } else if (heroes && heroes.length === 0) {
+            grid.innerHTML = `
+                <div class="loading-tip">
+                    <span style="font-size: 2rem;">📭</span>
+                    <p>暂无英雄数据，请检查 heroes.json 文件</p>
+                </div>
+            `;
+            resultCount.textContent = '共 0 位英雄';
+        }
+    }
+
+    // ================================================================
+    // 事件绑定
+    // ================================================================
     searchInput.addEventListener('input', function() {
         const val = this.value;
         searchText = val;
-        if (val.length > 0) clearBtn.classList.add('visible');
-        else clearBtn.classList.remove('visible');
+        if (val.length > 0) {
+            clearBtn.classList.add('visible');
+        } else {
+            clearBtn.classList.remove('visible');
+        }
         filterAndRender();
     });
+
     clearBtn.addEventListener('click', function() {
         searchInput.value = '';
         searchText = '';
@@ -560,23 +1012,16 @@
         filterAndRender();
         searchInput.focus();
     }
-    document.querySelector('.footer a')?.addEventListener('click', function(e) {
-        e.preventDefault();
-        resetAll();
-    });
 
-    // ======================= 初始化 ==========================
-    function initHeroes() {
-        grid.innerHTML = `<div class="loading-tip"><div class="spinner"></div><div>正在加载英雄数据…</div></div>`;
-        resultCount.textContent = '加载中…';
-        heroes = HEROES_BASE.map(h => {
-            const hero = { ...h };
-            hero.updates = parseHeroNotes(hero);
-            return hero;
-        });
-        filterAndRender();
-    }
-    initHeroes();
+    window.resetAll = resetAll;
+    window.openHeroRemarksModal = openHeroRemarksModal;
+    window.openAllRemarksModal = openAllRemarksModal;
+    window.closeModal = closeModal;
+
+    // ================================================================
+    // 启动
+    // ================================================================
+    init();
 </script>
 </body>
 </html>
