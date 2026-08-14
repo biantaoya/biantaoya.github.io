@@ -201,6 +201,24 @@
             box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
         }
 
+        /* 其他增益按钮特殊样式（独立开关） */
+        .type-filter button.filter-other {
+            background: transparent;
+            color: #8b5cf6;
+            border: 1px dashed #8b5cf6;
+        }
+
+        .type-filter button.filter-other:hover {
+            background: #ede9fe;
+        }
+
+        .type-filter button.filter-other.active {
+            background: #8b5cf6;
+            color: #ffffff;
+            border-color: #8b5cf6;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+        }
+
         /* ===== 统计 ===== */
         .stats {
             display: flex;
@@ -322,6 +340,7 @@
         .card .hero-header .type-badge.type-刺客 { background: #fce4ec; color: #9a1f3c; }
         .card .hero-header .type-badge.type-射手 { background: #d1fae5; color: #065f46; }
         .card .hero-header .type-badge.type-辅助 { background: #fce7f3; color: #9d174d; }
+        .card .hero-header .type-badge.type-其他 { background: #e0e7ff; color: #3730a3; }
 
         .card .attrs {
             display: flex;
@@ -355,6 +374,15 @@
             text-align: center;
         }
 
+        /* 其他增益特殊样式 */
+        .card .attr-item .value.other-buff {
+            background: #ede9fe;
+            border-color: #c4b5fd;
+            color: #5b21b6;
+            min-width: auto;
+            padding: 0.05rem 0.8rem;
+        }
+
         .card .attr-item .value.positive {
             color: #059669;
             border-color: #a7f3d0;
@@ -376,7 +404,6 @@
             background: transparent;
         }
 
-        /* 卡片底部备注提示 */
         .card .remark-hint {
             margin-top: 0.6rem;
             font-size: 0.7rem;
@@ -455,9 +482,9 @@
         .modal {
             background: #ffffff;
             border-radius: 24px;
-            max-width: 720px;
+            max-width: 820px;
             width: 100%;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow: hidden;
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
             display: flex;
@@ -513,66 +540,74 @@
             flex: 1;
         }
 
-        .remark-item {
-            padding: 0.7rem 0;
-            border-bottom: 1px solid #f3f4f6;
+        /* ===== 全部更新记录 - 按英雄分组 ===== */
+        .hero-remark-group {
             display: flex;
-            gap: 0.8rem;
             align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f3f4f6;
         }
 
-        .remark-item:last-child {
+        .hero-remark-group:last-child {
             border-bottom: none;
         }
 
-        .remark-version {
+        .hero-remark-group .group-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #f9fafb;
+        }
+
+        .hero-remark-group .group-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hero-remark-group .group-name {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 1rem;
+            color: #1a1a2e;
+            margin-bottom: 0.3rem;
+        }
+
+        .hero-remark-group .group-remarks {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .hero-remark-group .group-remarks .remark-line {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #374151;
+            padding: 0.1rem 0;
+        }
+
+        .hero-remark-group .group-remarks .remark-line .rv {
+            font-weight: 600;
+            font-size: 0.75rem;
             color: #d4a853;
             background: #fefce8;
-            padding: 0.1rem 0.6rem;
+            padding: 0.05rem 0.5rem;
             border-radius: 4px;
             white-space: nowrap;
             flex-shrink: 0;
-            margin-top: 0.05rem;
         }
 
-        .remark-content {
-            font-size: 0.9rem;
-            color: #374151;
-            line-height: 1.5;
+        .hero-remark-group .group-remarks .remark-line .rc {
+            word-break: break-word;
         }
 
-        .remark-empty {
+        .hero-remark-group .group-remarks .no-remark {
             color: #9ca3af;
-            font-size: 0.9rem;
-            padding: 1rem 0;
-            text-align: center;
-        }
-
-        .version-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .version-group .version-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #d4a853;
-            background: #fefce8;
-            padding: 0.2rem 0.8rem;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 0.5rem;
-        }
-
-        .version-group .remark-item {
-            padding-left: 0.5rem;
-        }
-
-        .version-group .remark-item .remark-hero {
-            font-weight: 500;
-            color: #1a1a2e;
-            margin-right: 0.4rem;
+            font-size: 0.85rem;
         }
 
         /* ===== 页脚 ===== */
@@ -620,6 +655,8 @@
             .logo-icon { font-size: 1.8rem; }
             .header-right .subtitle { display: none; }
             .update-log-btn { font-size: 0.7rem; padding: 0.3rem 0.8rem; }
+            .hero-remark-group { flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; }
+            .hero-remark-group .group-remarks .remark-line { flex-wrap: wrap; justify-content: center; }
         }
 
         @media (max-width: 480px) {
@@ -663,6 +700,8 @@
             <button data-type="刺客">刺客</button>
             <button data-type="射手">射手</button>
             <button data-type="辅助">辅助</button>
+            <!-- 其他增益：独立筛选按钮 -->
+            <button data-type="filter-other" class="filter-other" id="filterOtherBtn">✨ 其他增益</button>
         </div>
     </div>
 
@@ -707,6 +746,7 @@
     let heroes = [];
     let currentType = 'all';
     let searchText = '';
+    let filterOther = false;  // ✅ 其他增益筛选开关
 
     // ================================================================
     // DOM 引用
@@ -718,6 +758,7 @@
     const grid = document.getElementById('heroGrid');
     const noResult = document.getElementById('noResult');
     const typeButtons = document.querySelectorAll('#typeFilter button');
+    const filterOtherBtn = document.getElementById('filterOtherBtn');
 
     // ================================================================
     // 辅助函数
@@ -776,6 +817,7 @@
             const tkn = fmt(h.taken);
             const heal = fmt(h.heal);
             const shield = fmt(h.shield);
+            const other = h.other || null;
             const dmgCls = getCssClass(h.damage);
             const tknCls = getTakenCssClass(h.taken);
             const healCls = getCssClass(h.heal);
@@ -790,7 +832,7 @@
                     <div class="hero-header">
                         <img src="${iconPath}" alt="${h.name}" loading="lazy" onerror="this.src='${fallbackIcon}'">
                         <span class="hero-name">${h.name}</span>
-                        <span class="type-badge ${typeClass}">${h.type}</span>
+                        <span class="type-badge ${typeClass}">${h.type || '其他'}</span>
                     </div>
                     <div class="attrs">
                         <span class="attr-item">
@@ -803,6 +845,7 @@
                         </span>
                         ${heal !== null ? `<span class="attr-item"><span class="label">治疗</span><span class="value ${healCls}">${heal}</span></span>` : ''}
                         ${shield !== null ? `<span class="attr-item"><span class="label">护盾</span><span class="value ${shieldCls}">${shield}</span></span>` : ''}
+                        ${other ? `<span class="attr-item"><span class="label">增益</span><span class="value other-buff">${other}</span></span>` : ''}
                     </div>
                     ${hasRemarks ? `<div class="remark-hint"><span class="dot"></span> 点击查看历史调整 (${h.remarks.length}条)</div>` : ''}
                 </div>
@@ -816,7 +859,9 @@
         const filtered = heroes.filter(h => {
             const nameMatch = h.name.includes(searchText);
             const typeMatch = currentType === 'all' || h.type === currentType;
-            return nameMatch && typeMatch;
+            // 其他增益筛选：如果开启，只显示有 other 字段的英雄
+            const otherMatch = !filterOther || (h.other && h.other.trim());
+            return nameMatch && typeMatch && otherMatch;
         });
         render(filtered);
     }
@@ -884,53 +929,55 @@
 
         title.textContent = '📋 全部更新记录';
 
-        const allRemarks = [];
-        heroes.forEach(h => {
-            (h.remarks || []).forEach(r => {
-                allRemarks.push({
-                    ...r,
-                    heroName: h.name
-                });
-            });
-        });
+        // 收集所有有备注的英雄
+        const heroesWithRemarks = heroes
+            .filter(h => h.remarks && h.remarks.length > 0)
+            .sort((a, b) => a.name.localeCompare(b.name, 'zh'));
 
-        if (allRemarks.length === 0) {
+        if (heroesWithRemarks.length === 0) {
             body.innerHTML = `<div class="remark-empty">暂无任何更新记录</div>`;
             document.getElementById('remarkModal').classList.add('active');
             return;
         }
 
-        const sorted = allRemarks.sort((a, b) => {
-            const va = parseVersion(a.version);
-            const vb = parseVersion(b.version);
-            if (va[0] !== vb[0]) return vb[0] - va[0];
-            if (va[1] !== vb[1]) return vb[1] - va[1];
-            return (vb[2] || '').localeCompare(va[2] || '');
-        });
-
-        const groups = {};
-        sorted.forEach(r => {
-            const key = r.version || '未标记版本';
-            if (!groups[key]) groups[key] = [];
-            groups[key].push(r);
-        });
+        const fallbackIcon = 'https://ddragon.leagueoflegends.com/cdn/14.10.1/img/champion/default.png';
 
         let html = '';
-        for (const [version, items] of Object.entries(groups)) {
-            html += `<div class="version-group">`;
-            html += `<div class="version-title">📦 ${version}</div>`;
-            items.forEach(r => {
+        heroesWithRemarks.forEach(h => {
+            const iconPath = `./英雄联盟英雄头像_真名命名_173个/${h.name}.png`;
+            // 备注按版本排序（最新在前）
+            const sortedRemarks = [...(h.remarks || [])].sort((a, b) => {
+                const va = parseVersion(a.version);
+                const vb = parseVersion(b.version);
+                if (va[0] !== vb[0]) return vb[0] - va[0];
+                if (va[1] !== vb[1]) return vb[1] - va[1];
+                return (vb[2] || '').localeCompare(va[2] || '');
+            });
+
+            html += `
+                <div class="hero-remark-group">
+                    <img class="group-avatar" src="${iconPath}" alt="${h.name}" onerror="this.src='${fallbackIcon}'">
+                    <div class="group-info">
+                        <div class="group-name">${h.name}</div>
+                        <div class="group-remarks">
+            `;
+
+            sortedRemarks.forEach(r => {
+                const versionDisplay = r.version ? `<span class="rv">${r.version}</span>` : '';
                 html += `
-                    <div class="remark-item">
-                        <span class="remark-content">
-                            <span class="remark-hero">${r.heroName}</span>
-                            ${r.content}
-                        </span>
+                    <div class="remark-line">
+                        ${versionDisplay}
+                        <span class="rc">${r.content}</span>
                     </div>
                 `;
             });
-            html += `</div>`;
-        }
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
 
         body.innerHTML = html;
         document.getElementById('remarkModal').classList.add('active');
@@ -993,11 +1040,27 @@
         searchInput.focus();
     });
 
+    // 类型筛选按钮（排除“其他增益”按钮）
     typeButtons.forEach(btn => {
         btn.addEventListener('click', function() {
-            typeButtons.forEach(b => b.classList.remove('active'));
+            const type = this.dataset.type;
+
+            // 如果是“其他增益”按钮，独立处理
+            if (type === 'filter-other') {
+                filterOther = !filterOther;
+                this.classList.toggle('active');
+                filterAndRender();
+                return;
+            }
+
+            // 普通类型按钮：互斥
+            typeButtons.forEach(b => {
+                if (b.dataset.type !== 'filter-other') {
+                    b.classList.remove('active');
+                }
+            });
             this.classList.add('active');
-            currentType = this.dataset.type;
+            currentType = type;
             filterAndRender();
         });
     });
@@ -1006,9 +1069,23 @@
         searchInput.value = '';
         searchText = '';
         clearBtn.classList.remove('visible');
-        typeButtons.forEach(b => b.classList.remove('active'));
-        document.querySelector('#typeFilter button[data-type="all"]').classList.add('active');
+
+        typeButtons.forEach(b => {
+            if (b.dataset.type === 'filter-other') {
+                b.classList.remove('active');
+            } else {
+                b.classList.remove('active');
+            }
+        });
+
+        // 重置“其他增益”开关
+        filterOther = false;
+
+        // 选中“全部”
+        const allBtn = document.querySelector('#typeFilter button[data-type="all"]');
+        if (allBtn) allBtn.classList.add('active');
         currentType = 'all';
+
         filterAndRender();
         searchInput.focus();
     }
