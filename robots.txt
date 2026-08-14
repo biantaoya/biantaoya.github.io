@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://biantaoya.github.io/sitemap.xml
