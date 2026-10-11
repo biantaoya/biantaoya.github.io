@@ -4,14 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>符文大乱斗 · 英雄属性查询</title>
-	    <!-- 2. 网页描述：会显示在搜索结果标题下方，吸引用户点击 -->
-	    <meta name="description" content="英雄联盟手游符文大乱斗模式英雄Buff：伤害、承伤、治疗、护盾调整一览。">
+    <!-- 网页描述：会显示在搜索结果标题下方 -->
+    <meta name="description" content="英雄联盟手游符文大乱斗模式英雄Buff：伤害、承伤、治疗、护盾调整一览。">
+    <meta name="keywords" content="符文大乱斗, LOL手游, 英雄联盟手游, Buff查询, 伤害调整">
+    <meta name="theme-color" content="#1a1a2e">
 
-	    <!-- 3. 关键词：虽然重要性下降，但写上无妨 -->
-	    <meta name="keywords" content="符文大乱斗, LOL手游, 英雄联盟手游, Buff查询, 伤害调整">
+    <!-- 分享到聊天软件时的卡片 -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="符文大乱斗 · 英雄属性查询">
+    <meta property="og:title" content="符文大乱斗 · 英雄属性查询">
+    <meta property="og:description" content="英雄联盟手游符文大乱斗模式英雄Buff：伤害、承伤、治疗、护盾调整一览。">
+    <meta property="og:url" content="https://biantaoya.github.io/">
+    <meta property="og:image" content="https://biantaoya.github.io/og-cover.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- 图标 -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Inter 只管数字和字母。这里先用 media=print 低优先级拉取，脚本里再切回 all：
+         访问不到 Google Fonts 时页面不会再卡在等样式表上。 -->
+    <link id="fontCss" rel="stylesheet" media="print"
+          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,10 +39,11 @@
         <div class="header-left">
             <span class="logo-icon">⚔️</span>
             <h1>符文大乱斗</h1>
-            <span class="version-badge">v7.2b</span>
+            <!-- 版本号由 script.js 从 heroes.json 推导，避免和数据脱节 -->
+            <span class="version-badge" id="versionBadge"></span>
         </div>
         <div class="header-right">
-            <button class="update-log-btn" onclick="openAllRemarksModal()">📋 全部更新记录</button>
+            <button class="update-log-btn" id="allRemarksBtn" type="button">📋 全部更新记录</button>
             <div class="subtitle">英雄属性调整 · 实时查询</div>
         </div>
     </div>
@@ -33,36 +51,37 @@
     <!-- 筛选栏 -->
     <div class="filters">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="搜索英雄…" autofocus>
-            <button class="clear-btn" id="clearBtn">✕</button>
+            <input type="search" id="searchInput" placeholder="搜索英雄…" aria-label="搜索英雄" autofocus>
+            <button class="clear-btn" id="clearBtn" type="button" aria-label="清空搜索">✕</button>
         </div>
-        <div class="type-filter" id="typeFilter">
-            <button class="active" data-type="all">全部</button>
-            <button data-type="战士">战士</button>
-            <button data-type="坦克">坦克</button>
-            <button data-type="法师">法师</button>
-            <button data-type="刺客">刺客</button>
-            <button data-type="射手">射手</button>
-            <button data-type="辅助">辅助</button>
+        <div class="type-filter" id="typeFilter" role="group" aria-label="按英雄类型筛选">
+            <button class="active" type="button" data-type="all" aria-pressed="true">全部</button>
+            <button type="button" data-type="战士" aria-pressed="false">战士</button>
+            <button type="button" data-type="坦克" aria-pressed="false">坦克</button>
+            <button type="button" data-type="法师" aria-pressed="false">法师</button>
+            <button type="button" data-type="刺客" aria-pressed="false">刺客</button>
+            <button type="button" data-type="射手" aria-pressed="false">射手</button>
+            <button type="button" data-type="辅助" aria-pressed="false">辅助</button>
         </div>
     </div>
 
     <!-- 统计 -->
-    <div class="stats">
+    <div class="stats" aria-live="polite">
         <span class="count" id="resultCount">加载中…</span>
         <span class="match-info" id="matchInfo"></span>
     </div>
 
     <!-- 英雄网格 -->
     <div id="heroGrid" class="grid"></div>
-    <div id="noResult" class="no-result" style="display:none;">
+    <div id="noResult" class="no-result" hidden>
         <span>🕵️</span> 没有找到匹配的英雄
     </div>
 
     <!-- 页脚 -->
     <div class="footer">
-        <span>数据基于 7.2b / 7.1d / 6.3d 版本</span>
-        <a onclick="resetAll();">重置筛选</a>
+        <!-- 版本范围由 script.js 从 heroes.json 的备注里汇总 -->
+        <span id="dataVersions"></span>
+        <button class="link-btn" id="resetBtn" type="button">重置筛选</button>
         <span>分类基于英雄联盟手游官网</span>
     </div>
 
@@ -70,12 +89,13 @@
 
 <!-- 备注弹窗 -->
 <div class="modal-overlay" id="remarkModal">
-    <div class="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
         <div class="modal-header">
             <h2 id="modalTitle">📝 历史调整</h2>
-            <button class="modal-close" onclick="closeModal()">✕</button>
+            <button class="modal-close" id="modalCloseBtn" type="button" aria-label="关闭">✕</button>
         </div>
-        <div class="modal-body" id="modalBody">
+        <!-- tabindex 让键盘可以直接滚动这块内容 -->
+        <div class="modal-body" id="modalBody" tabindex="0">
             <!-- 动态渲染 -->
         </div>
     </div>

@@ -4,6 +4,12 @@
             padding: 0;
         }
 
+        /* 键盘焦点统一用金色描边标识，鼠标点击时不显示 */
+        :focus-visible {
+            outline: 3px solid #d4a853;
+            outline-offset: 2px;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f0f2f5;
@@ -133,6 +139,12 @@
             font-weight: 400;
         }
 
+        /* 用自绘的 ✕，藏掉 type=search 自带的那个 */
+        .search-box input::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
         .search-box .clear-btn {
             position: absolute;
             right: 8px;
@@ -240,6 +252,12 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            /* 卡片现在是 <button>，把浏览器默认样式复位 */
+            font-family: inherit;
+            font-size: inherit;
+            text-align: left;
+            color: inherit;
+            width: 100%;
         }
 
         .card::before {
@@ -254,13 +272,15 @@
             transition: opacity 0.3s;
         }
 
-        .card:hover {
+        .card:hover,
+        .card:focus-visible {
             border-color: #d4a853;
             transform: translateY(-3px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
-        .card:hover::before {
+        .card:hover::before,
+        .card:focus-visible::before {
             opacity: 1;
         }
 
@@ -282,7 +302,8 @@
             transition: border-color 0.2s;
         }
 
-        .card:hover .hero-header img {
+        .card:hover .hero-header img,
+        .card:focus-visible .hero-header img {
             border-color: #d4a853;
         }
 
@@ -423,6 +444,21 @@
             margin-bottom: 1rem;
         }
 
+        .loading-tip.is-error {
+            color: #dc2626;
+        }
+
+        .loading-tip .tip-icon {
+            display: block;
+            font-size: 2rem;
+        }
+
+        .loading-tip .tip-detail {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -458,6 +494,11 @@
             display: flex;
             flex-direction: column;
             animation: modalFadeIn 0.25s ease;
+        }
+
+        /* 打开弹窗时把焦点移到容器上（供读屏朗读标题），不需要画焦点圈 */
+        .modal:focus {
+            outline: none;
         }
 
         @keyframes modalFadeIn {
@@ -506,6 +547,12 @@
             padding: 1.2rem 1.5rem 1.5rem;
             overflow-y: auto;
             flex: 1;
+        }
+
+        /* 这块可以单独获得焦点，方便键盘滚动长内容 */
+        .modal-body:focus-visible {
+            outline: 2px solid #d4a853;
+            outline-offset: -4px;
         }
 
         /* ===== 弹窗 - 单个英雄备注 ===== */
@@ -631,15 +678,22 @@
             flex-wrap: wrap;
         }
 
-        .footer a {
+        .footer .link-btn {
             color: #6b7280;
             text-decoration: none;
             transition: color 0.2s;
             border-bottom: 1px dotted transparent;
             cursor: pointer;
+            /* 用按钮实现，但外观保持文字链接的样子 */
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding: 0;
+            font: inherit;
         }
 
-        .footer a:hover {
+        .footer .link-btn:hover {
             color: #d4a853;
             border-bottom-color: #d4a853;
         }
