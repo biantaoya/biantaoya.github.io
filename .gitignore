@@ -1,0 +1,21 @@
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Excel 打开文件时产生的临时文件
+~$*.xlsx
+*.tmp.xlsx
+
+# convert.py 先写临时文件再替换，正常结束时不会有残留
+heroes.json.tmp
+
+# 头像原始素材（128x128 PNG）留在本地，只把生成的 WebP 入库
+icons-source/
+
+# Python
+__pycache__/
+*.pyc
+
+# tools/build-assets.mjs 的依赖（自己 npm install sharp 时产生）
+node_modules/
